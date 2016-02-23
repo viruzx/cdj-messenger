@@ -1,0 +1,95 @@
+<html>
+
+<head>
+  <title>CDJ Login</title>
+  <link rel="stylesheet" href="/files/animations.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/css/foundation.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background: #F0F0F3;
+    }
+
+    .login-box {
+      background: #fff;
+      border: 1px solid #ddd;
+      margin: 100px 0;
+      padding: 40px 20px 0 20px;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 350px;
+    }
+
+    body {
+      height: 100vh;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container animated fadeInLeft delay small-centered columns">
+    <div class="login-box">
+      <div class="row">
+        <div class="large-12 columns">
+          <form method="post">
+            <div class="row">
+              <div class="large-12 columns">
+                <input required type="text" id="u" name="username" placeholder="Username" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="large-12 columns">
+                <input required type="password" id="p" name="password" placeholder="Password" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="large-12 large-centered columns">
+                <input type="submit" class="button expand" value="Log In" />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/js/foundation.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+<script src="http://res.cloudinary.com/dwooxisgf/raw/upload/v1455675569/jquery.titlealert_he5vvp.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/js/foundation/foundation.alert.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+
+<script>
+  //Get hash from string either for security or convinience.
+  String.prototype.hashCode = function() {
+    var hash = 0,
+      i, chr, len;
+    if (this.length === 0) return hash;
+    for (i = 0, len = this.length; i < len; i++) {
+      chr = this.charCodeAt(i);
+      hash = ((hash << 5) - hash) + chr;
+      hash |= 0;
+    }
+    return hash;
+  };
+  if (localStorage.username == null && localStorage.pass == null && localStorage.username == "" && localStorage.pass == "") {
+    location = "/";
+  }
+  $('form').submit(function() {
+    //Create object with the username, message and their key.
+    var user = $('#u').val();
+    var pass = $('#p').val();
+    localStorage.username = user;
+    localStorage.pass = pass.hashCode();
+    location = "/";
+    return false;
+  });
+</script>
+
+</html>
