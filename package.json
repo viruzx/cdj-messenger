@@ -8,6 +8,10 @@
     "orchestrate": "^0.8.0",
     "socket.io": "~1.4.5"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://viruzx@bitbucket.org/viruzx/cdj-messenger.git"
+  },
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
