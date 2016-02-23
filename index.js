@@ -1,7 +1,8 @@
 //Pre-load utilities
 //Core software
 var app = require('express')();
-var request = require('sync-request');
+//Only for legacy login
+//var request = require('sync-request');
 //HTTP server
 var http = require('http').Server(app);
 //Socket.io component

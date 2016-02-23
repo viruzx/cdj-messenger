@@ -1,13 +1,11 @@
 {
   "name": "cdj-messenger",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Socket.io chat",
   "dependencies": {
     "express": "~4.10.2",
     "html-entities": "^1.2.0",
-    "node-supervisor": "^1.0.2",
     "orchestrate": "^0.8.0",
-    "q": "^1.4.1",
     "socket.io": "~1.4.5"
   },
   "main": "index.js",
