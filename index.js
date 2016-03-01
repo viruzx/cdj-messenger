@@ -164,7 +164,7 @@ function login(user, pass, sid, key) {
     })
 }
 io.on('connection', function(socket) {
-  //Legacy Login  
+  //Legacy Login
   //Poorly designed login that uses synchronous technology instead of async
   /*socket.on('auth', function(user) {
     var validate = login_legacy(user.usr, user.pass);
@@ -245,7 +245,7 @@ io.on('connection', function(socket) {
 });
 
 http.listen(3000, function() {
-  console.log('listening on *:3000');
+  console.log('Messenger started on port 3000');
 });
 
 var stdin = process.openStdin();
