@@ -127,10 +127,6 @@ app.get('/files/:file', function(req, res) {
   var filename = req.params.file;
   res.sendFile(__dirname + '/files/' + filename);
 });
-app.get('/images/:file', function(req, res) {
-  var filename = req.params.file;
-  res.sendFile(__dirname + '/image/' + filename);
-});
 Array.prototype.remove = function() {
   var what, a = arguments,
     L = a.length,
@@ -207,7 +203,6 @@ io.on('connection', function(socket) {
     imgur.uploadBase64(obj.data)
     .then(function (json) {
         obj.data = json.data.link;
-        console.log(obj.data);
         clients.forEach(function(element, index, array) {
           io.to(element).emit('image', obj);
         });

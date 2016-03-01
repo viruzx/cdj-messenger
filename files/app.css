@@ -64,6 +64,7 @@ a.fancybox:hover img {
 #messages {
   height: 60vh;
   overflow: auto;
+  margin-top: 2.8125rem;
 }
 /*
   For messages that YOU send
@@ -74,10 +75,13 @@ a.fancybox:hover img {
 .you {
   text-align: right;
 }
-
+.top-bar{
+  position: fixed;
+  right: 0;
+  left: 0;
+}
 .top-bar.expanded {
   background: #333;
-  height: 100vh !important;
 }
 
 .main {
