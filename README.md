@@ -7,7 +7,7 @@ CDJ Messenger is an open-source, portable, flexible and *intended to be* a secur
  - Be secure
  - Be easily modifiable
 
-##Dependencies (npm modules)
+##Dependencies (npm modules) 
 
  - express
  - http

