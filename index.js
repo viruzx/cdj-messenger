@@ -203,7 +203,7 @@ io.on('connection', function(socket) {
 
   var imgur = require('imgur');
   function shareImage(obj){
-    var obj.data = obj.data.replace(/^data:image\/(png|gif|jpeg);base64,/,'');
+    obj.data = obj.data.replace(/^data:image\/(png|gif|jpeg);base64,/,'');
     imgur.uploadBase64(obj.data)
     .then(function (json) {
         obj.data = json.data.link;
