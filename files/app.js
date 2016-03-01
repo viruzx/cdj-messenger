@@ -394,12 +394,6 @@ $( "#messages" ).scroll(function() {
   isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
 });
 
-document.addEventListener("backbutton", onBackKeyDown, false);
-
-function onBackKeyDown() {
-$('.reveal-modal').foundation('reveal', 'close');
-}
-
 //Make everything functional
 $(document).ready(function() {
   //First of all we NEED to authenticate or things will be breaking :/
