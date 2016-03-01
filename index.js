@@ -190,7 +190,7 @@ io.on('connection', function(socket) {
         clients.forEach(function(element, index, array) {
           io.to(element).emit('chat message', obj);
         });
-        fs.appendFile('message.html', "<li class='u" + obj.user.hashCode() + "''>" + escape(obj.name + ": " + obj.msg) + "</li>", function(err) {});
+        fs.appendFile('message.html', "<li class='msgtxt u" + obj.user.hashCode() + "''>" + escape(obj.name + ": " + obj.msg) + "</li>", function(err) {});
       } else {
         console.log("Message ignored because null.");
       }
@@ -211,7 +211,7 @@ io.on('connection', function(socket) {
         clients.forEach(function(element, index, array) {
           io.to(element).emit('image', obj);
         });
-        fs.appendFile('message.html', "<li class='u" + obj.user.hashCode() + "''>" + escape(obj.name) + ": <img class='image' src='" + obj.data + "'>" + "</li>", function(err) {});
+        fs.appendFile('message.html', "<li class='msgimg u" + obj.user.hashCode() + "''>" + escape(obj.name) + ": <img class='image' src='" + obj.data + "'>" + "</li>", function(err) {});
     })
     .catch(function (err) {
         console.error(err.message);

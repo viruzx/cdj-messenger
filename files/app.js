@@ -65,7 +65,7 @@ window.addEventListener('OnMsg', function(e) {
 //Utilities
 //Create links
 function createlinks() {
-  $('li').each(function() {
+  $('.msgtxt').each(function() {
     // Get the content
     var str = $(this).html();
     // Set the regex string
@@ -193,7 +193,7 @@ socket.on('chat message', function(obj) {
   to prevent undesired styling by users.
   */
 
-  $('#messages').append($('<li class="u' + obj.user.hashCode() + '">').text(obj.name + ": " + obj.msg));
+  $('#messages').append($('<li class="msgtxt u' + obj.user.hashCode() + '">').text(obj.name + ": " + obj.msg));
 
   //Adjust again just to make sure.
   //This function also calls to add relevant classes
@@ -214,7 +214,7 @@ socket.on('chat message', function(obj) {
 socket.on('image', function(obj) {
 
   console.log($('#messages').outerHeight());
-  $('#messages').append($('<li class="u' + obj.user.hashCode() + '">').html(obj.name + ": <img class='image' src='" + obj.data + "'>"));
+  $('#messages').append($('<li class="msgimg u' + obj.user.hashCode() + '">').html(obj.name + ": <img class='image' src='" + obj.data + "'>"));
 
   //Adjust again just to make sure.
   //This function also calls to add relevant classes
