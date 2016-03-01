@@ -164,7 +164,7 @@ function login(user, pass, sid, key) {
     })
 }
 io.on('connection', function(socket) {
-  //Legacy Login
+  //Legacy Login  
   //Poorly designed login that uses synchronous technology instead of async
   /*socket.on('auth', function(user) {
     var validate = login_legacy(user.usr, user.pass);
