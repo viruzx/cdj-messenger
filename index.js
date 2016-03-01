@@ -200,6 +200,24 @@ io.on('connection', function(socket) {
       io.to(socket.id).emit("authentication", false);
     }
   });
+
+  var imgur = require('imgur');
+  function shareImage(obj){
+    var obj.data = obj.data.replace(/^data:image\/(png|gif|jpeg);base64,/,'');
+    imgur.uploadBase64(obj.data)
+    .then(function (json) {
+        obj.data = json.data.link;
+        console.log(obj.data);
+        clients.forEach(function(element, index, array) {
+          io.to(element).emit('image', obj);
+        });
+        fs.appendFile('message.html', "<li class='u" + obj.user.hashCode() + "''>" + escape(obj.name) + ": <img class='image' src='" + obj.data + "'>" + "</li>", function(err) {});
+    })
+    .catch(function (err) {
+        console.error(err.message);
+    });
+  }
+
   socket.on('image', function(obj) {
     console.log(obj);
     if (checkkey(obj.user, obj.key)) {
@@ -207,10 +225,7 @@ io.on('connection', function(socket) {
       if (base64regex.test(obj.data)) {
         delete obj.key;
         obj.name = getname(obj.user);
-        clients.forEach(function(element, index, array) {
-          io.to(element).emit('image', obj);
-        });
-        fs.appendFile('message.html', "<li class='u" + obj.user.hashCode() + "''>" + escape(obj.name) + ": <img class='image' src='" + obj.data + "'>" + "</li>", function(err) {});
+        shareImage(obj);
       } else {
         console.log("Image invalid.");
       }
@@ -220,6 +235,7 @@ io.on('connection', function(socket) {
       io.to(socket.id).emit("authentication", false);
     }
   });
+
   socket.on('typingMessage', function(obj) {
     if (checkkey(obj.username, obj.key)) {
       delete obj.key;
