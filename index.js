@@ -215,7 +215,6 @@ io.on('connection', function(socket) {
   }
 
   socket.on('image', function(obj) {
-    console.log(obj);
     if (checkkey(obj.user, obj.key)) {
       var base64regex = /[A-Za-z0-9+/=]/;
       if (base64regex.test(obj.data)) {
