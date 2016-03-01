@@ -252,6 +252,24 @@ socket.on('alert', function(notif) {
     interval: 700
   });
 });
+
+//Notify about error
+socket.on('alert', function(notif) {
+  var modid = makeid();
+  $('body').prepend('<div id="' + modid +
+    '" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">  <h2 id="modalTitle">Error!</h2>  <p class="lead">The system sent you this message: </p>  <p> ' + notif +
+    '</p>  <a class="close-reveal-modal" aria-label="Close">&#215;</a></div>');
+  $("#" + modid).foundation('reveal', 'open');
+  adjust();
+  //Notify about broadcast
+  //TODO: Add notification sound and desktop popup
+  $.titleAlert("Broadcast from system!", {
+    requireBlur: true,
+    stopOnFocus: true,
+    duration: 0,
+    interval: 700
+  });
+});
 //Authentication handling
 socket.on('authentication', function(isAuth) {
   if (isAuth) {

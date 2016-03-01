@@ -209,6 +209,7 @@ io.on('connection', function(socket) {
         fs.appendFile('message.html', "<li class='msgimg u" + obj.user.hashCode() + "''>" + escape(obj.name) + ": <img class='image' src='" + obj.data + "'>" + "</li>", function(err) {});
     })
     .catch(function (err) {
+        io.to(obj.id).emit("Error", err.message);
         console.error(err.message);
     });
   }
@@ -219,6 +220,7 @@ io.on('connection', function(socket) {
       var base64regex = /[A-Za-z0-9+/=]/;
       if (base64regex.test(obj.data)) {
         delete obj.key;
+        obj.id = socket.id;
         obj.name = getname(obj.user);
         shareImage(obj);
       } else {
