@@ -254,7 +254,7 @@ socket.on('alert', function(notif) {
 });
 
 //Notify about error
-socket.on('alert', function(notif) {
+socket.on('error', function(notif) {
   var modid = makeid();
   $('body').prepend('<div id="' + modid +
     '" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">  <h2 id="modalTitle">Error!</h2>  <p class="lead">The system sent you this message: </p>  <p> ' + notif +
