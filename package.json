@@ -6,7 +6,10 @@
     "express": "~4.10.2",
     "html-entities": "^1.2.0",
     "orchestrate": "^0.8.0",
-    "socket.io": "~1.4.5"
+    "socket.io": "~1.4.5",
+    "tinify": "^1.2.0",
+    "uploadcare": "^0.4.1",
+    "ursa": "^0.9.1"
   },
   "repository": {
     "type": "git",

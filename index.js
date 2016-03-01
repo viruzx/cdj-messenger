@@ -1,8 +1,8 @@
 //Pre-load utilities
 //Core software
 var app = require('express')();
-//Only for legacy login
-//var request = require('sync-request');
+
+var request = require('sync-request');
 //HTTP server
 var http = require('http').Server(app);
 //Socket.io component
@@ -16,7 +16,6 @@ var db = require('orchestrate')("8db57077-993b-4c5a-8f83-3d3fc99b3304");
 //Sanitization tools
 var Entities = require('html-entities').AllHtmlEntities;
 entities = new Entities();
-
 //Valid keys will be stored in this array
 var validkeys = [];
 //An array storring authenticated clients
@@ -103,7 +102,7 @@ function escape(str) {
 //Check key (requires username and key)
 function checkkey(user, key) {
   var check = user + "|" + key;
-  if (key.indexOf("|") > -1) {
+  if (key.indexOf("|") > -1 || user.indexOf("|") > -1) {
     //Key Tampering Detected
     return false;
   }
@@ -122,10 +121,15 @@ app.get('/previous/:user/:key', function(req, res) {
 });
 
 //Probably a very serious security flaw :/
+//Update: Not actually a security flaw! (express handles it)
 //Start :file with .. does something weird
 app.get('/files/:file', function(req, res) {
   var filename = req.params.file;
   res.sendFile(__dirname + '/files/' + filename);
+});
+app.get('/images/:file', function(req, res) {
+  var filename = req.params.file;
+  res.sendFile(__dirname + '/image/' + filename);
 });
 Array.prototype.remove = function() {
   var what, a = arguments,
@@ -144,18 +148,17 @@ Array.prototype.remove = function() {
 var clients = [];
 
 function login(user, pass, sid, key) {
+  console.log("User " + user + " is trying to authenticate");
   db.get('users', user)
     .then(function(res) {
-      console.log("I got a response!");
       if (res.body.password.hashCode() == pass) {
         console.log("Login Valid!");
         validkeys.push(user + "|" + key);
-        console.log("User " + user.usr +
-          " validated with the key " + user + "|" + key);
+        console.log("User " + user + " validated with the key " + user + "|" + key);
         clients.push(sid);
         io.to(sid).emit("authentication", true);
       } else {
-        console.log("Auth failed while authing");
+        console.log("User " + user + " failed to authenticate");
         io.to(sid).emit("authentication", false);
       }
     })
@@ -190,6 +193,26 @@ io.on('connection', function(socket) {
         fs.appendFile('message.html', "<li class='u" + obj.user.hashCode() + "''>" + escape(obj.name + ": " + obj.msg) + "</li>", function(err) {});
       } else {
         console.log("Message ignored because null.");
+      }
+    } else {
+      //Notify about issues concerning authenication
+      console.log("Auth failed while chatting");
+      io.to(socket.id).emit("authentication", false);
+    }
+  });
+  socket.on('image', function(obj) {
+    console.log(obj);
+    if (checkkey(obj.user, obj.key)) {
+      var base64regex = /[A-Za-z0-9+/=]/;
+      if (base64regex.test(obj.data)) {
+        delete obj.key;
+        obj.name = getname(obj.user);
+        clients.forEach(function(element, index, array) {
+          io.to(element).emit('image', obj);
+        });
+        fs.appendFile('message.html', "<li class='u" + obj.user.hashCode() + "''>" + escape(obj.name) + ": <img class='image' src='" + obj.data + "'>" + "</li>", function(err) {});
+      } else {
+        console.log("Image invalid.");
       }
     } else {
       //Notify about issues concerning authenication
