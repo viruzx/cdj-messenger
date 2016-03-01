@@ -364,12 +364,10 @@ socket.on('stoptyping', function(data) {
 });
 
 function previewFile() {
-  var preview = document.querySelector('img');
   var file = document.querySelector('input[type=file]').files[0];
   var reader = new FileReader();
 
   reader.addEventListener("load", function() {
-    preview.src = reader.result;
     var imageobj = {
       user: uservar.usr,
       key: uservar.key,
