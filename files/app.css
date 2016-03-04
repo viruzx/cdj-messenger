@@ -122,3 +122,13 @@ a.fancybox:hover img {
   border-radius: 0;
   border: none;
 }
+.download {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 15px;
+  color: #DCDCDC;
+}
+.download:hover {
+  color: #B9B9B9;
+}

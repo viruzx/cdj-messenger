@@ -5,7 +5,7 @@ function showimage(isrc) {
 }
 var out = document.getElementById("messages");
 // allow 1px inaccuracy by adding 1
-var isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+var isScrolledToBottom = true
 
 
 //Thing to detect focus
@@ -147,6 +147,7 @@ function prevmsg() {
     createlinks();
     $(".image").on('click', function(e) {
       showimage($(this).attr('src'));
+      $(".download").attr("href", $(".imgcontainer img").attr("src") ); 
     });
   });
 }
@@ -427,6 +428,9 @@ $('#m').bind('resize', function() {
     out.scrollTop = out.scrollHeight - out.clientHeight;
   }
   isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+});
+$(window).load(function(){
+  out.scrollTop = out.scrollHeight - out.clientHeight;
 });
 //Make everything functional
 $(document).ready(function() {
