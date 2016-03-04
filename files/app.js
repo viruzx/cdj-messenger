@@ -147,7 +147,7 @@ function prevmsg() {
     createlinks();
     $(".image").on('click', function(e) {
       showimage($(this).attr('src'));
-      $(".download").attr("href", $(".imgcontainer img").attr("src") ); 
+      $(".download").attr("href", $(".imgcontainer img").attr("src"));
     });
   });
 }
@@ -429,7 +429,11 @@ $('#m').bind('resize', function() {
   }
   isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
 });
-$(window).load(function(){
+$(window).load(function() {
+  out.scrollTop = out.scrollHeight - out.clientHeight;
+});
+$(window).resize(function() {
+  isScrolledToBottom = true;
   out.scrollTop = out.scrollHeight - out.clientHeight;
 });
 //Make everything functional
