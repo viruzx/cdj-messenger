@@ -63,6 +63,10 @@ window.addEventListener('OnMsg', function(e) {
 
 
 //Utilities
+//Escape html
+function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
 //Create links
 function createlinks() {
   $('.msgtxt').each(function() {
@@ -194,7 +198,7 @@ socket.on('chat message', function(obj) {
   to prevent undesired styling by users.
   */
 
-  $('#messages').append($('<li class="msgtxt u' + obj.user.hashCode() + '">').text(obj.name + ": " + obj.msg));
+  $('#messages').append('<li class="msgtxt u' + obj.user.hashCode() + '"><b>' + obj.name + ":</b> " + htmlEntities(obj.msg) + "</li>");
 
   //Adjust again just to make sure.
   //This function also calls to add relevant classes
@@ -215,7 +219,7 @@ socket.on('chat message', function(obj) {
 socket.on('image', function(obj) {
 
   console.log($('#messages').outerHeight());
-  $('#messages').append($('<li class="msgimg u' + obj.user.hashCode() + '">').html(obj.name + ": <img class='image' src='" + obj.data + "'>"));
+  $('#messages').append($('<li class="msgimg u' + obj.user.hashCode() + '">').html("<b>" + obj.name + ":</b> <img class='image' src='" + obj.data + "'>"));
 
   //Adjust again just to make sure.
   //This function also calls to add relevant classes
