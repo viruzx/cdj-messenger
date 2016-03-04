@@ -34,7 +34,7 @@ function NewMsg(obj) {
 //Example to handle event:
 window.addEventListener('OnMsg', function(e) {
   if (!isActive) {
-    if (enable_beep){
+    if (enable_beep) {
       play_beep();
     }
 
@@ -69,7 +69,7 @@ window.addEventListener('OnMsg', function(e) {
 //Utilities
 //Escape html
 function htmlEntities(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 //Create links
 function createlinks() {
@@ -206,7 +206,9 @@ socket.on('chat message', function(obj) {
 
   //Adjust again just to make sure.
   //This function also calls to add relevant classes
-  createlinks();
+  if (obj.msg.indexOf("http") > -1) {
+    createlinks();
+  }
   adjust();
   //Make the tab titlebar flash with "New message!" to attract attention
   $.titleAlert("New Message!", {
@@ -227,7 +229,6 @@ socket.on('image', function(obj) {
 
   //Adjust again just to make sure.
   //This function also calls to add relevant classes
-  createlinks();
   adjust();
   $(".image").on('click', function(e) {
     showimage($(this).attr('src'));
