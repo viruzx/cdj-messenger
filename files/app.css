@@ -36,8 +36,8 @@ a.fancybox:hover img {
   background-image: url(/files/unknown.png);
   background-repeat: no-repeat;
   padding-left: 40px;
-  background-size: 30px 30px;
-  background-position: center left;
+  background-size: 35px 35px;
+  background-position: top left;
   word-wrap: break-word;
 }
 #messages li:nth-child(odd) {
