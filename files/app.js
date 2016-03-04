@@ -5,7 +5,8 @@ function showimage(isrc) {
 }
 var out = document.getElementById("messages");
 // allow 1px inaccuracy by adding 1
-var isScrolledToBottom = true
+var isScrolledToBottom = true;
+var enable_beep = true;
 
 
 //Thing to detect focus
@@ -33,7 +34,10 @@ function NewMsg(obj) {
 //Example to handle event:
 window.addEventListener('OnMsg', function(e) {
   if (!isActive) {
-    play_beep();
+    if (enable_beep){
+      play_beep();
+    }
+
 
     // request permission on page load
     document.addEventListener('DOMContentLoaded', function() {
