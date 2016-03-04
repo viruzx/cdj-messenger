@@ -446,7 +446,7 @@ $(window).resize(function() {
   out.scrollTop = out.scrollHeight - out.clientHeight;
 });
 //PAste Image Module
-document.getElementById('#m').onpaste = function (event) {
+document.getElementById('m').onpaste = function (event) {
   // use event.originalEvent.clipboard for newer chrome versions
   var items = (event.clipboardData  || event.originalEvent.clipboardData).items;
   console.log(JSON.stringify(items)); // will give you the mime types
