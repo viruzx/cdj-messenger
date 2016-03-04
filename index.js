@@ -207,7 +207,7 @@ io.on('connection', function(socket) {
         clients.forEach(function(element, index, array) {
           io.to(element).emit('image', obj);
         });
-        fs.appendFile('message.html', "<li class='msgimg u" + obj.user.hashCode() + "''>" + escape(obj.name) + ": <img class='image' src='" + obj.data + "'>" + "</li>", function(err) {});
+        fs.appendFile('message.html', "<li class='msgimg u" + obj.user.hashCode() + "''><b>" + escape(obj.name) + ":</b> <img class='image' src='" + obj.data + "'>" + "</li>", function(err) {});
     })
     .catch(function (err) {
         io.to(obj.id).emit("Error", err.message);
