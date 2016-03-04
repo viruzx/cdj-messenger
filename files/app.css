@@ -132,8 +132,9 @@ a.fancybox:hover img {
   bottom: 0;
   right: 0;
   padding: 15px;
-  color: #DCDCDC;
+  color: #B9B9B9;
+  opacity: 0.5;
 }
 .download:hover {
-  color: #B9B9B9;
+  opacity: 1;
 }
