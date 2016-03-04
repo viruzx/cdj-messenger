@@ -82,9 +82,14 @@ a.fancybox:hover img {
   left: 0;
   max-width: 62.5rem;
   margin: auto;
+  z-index: 999;
 }
 .top-bar.expanded {
   background: #333;
+  z-index: 999;
+}
+.reveal-modal{
+  z-index: 9999;
 }
 .main {
   width: 100vw;
