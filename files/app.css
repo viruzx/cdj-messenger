@@ -138,3 +138,6 @@ a.fancybox:hover img {
 .download:hover {
   opacity: 1;
 }
+.msgimg b{
+  vertical-align: top;
+}
