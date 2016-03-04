@@ -409,7 +409,12 @@ $("body").bind("DOMSubtreeModified", function() {
 $( "#messages" ).scroll(function() {
   isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
 });
-
+new ResizeSensor(jQuery('#m'), function() {
+  if(isScrolledToBottom){
+      out.scrollTop = out.scrollHeight - out.clientHeight;
+    }
+    isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+});
 //Make everything functional
 $(document).ready(function() {
   //First of all we NEED to authenticate or things will be breaking :/

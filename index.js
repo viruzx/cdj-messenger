@@ -198,29 +198,21 @@ io.on('connection', function(socket) {
   });
 
   var imgur = require('imgur');
-
-  function shareImage(obj) {
-    try {
-
-      obj.data = obj.data.replace(/^data:image\/(png|gif|jpeg);base64,/, '');
-      imgur.uploadBase64(obj.data)
-        .then(function(json) {
-          obj.data = json.data.link;
-          clients.forEach(function(element, index, array) {
-            io.to(element).emit('image', obj);
-          });
-          fs.appendFile('message.html', "<li class='msgimg u" + obj.user.hashCode() + "''>" + escape(obj.name) + ": <img class='image' src='" + obj.data + "'>" + "</li>", function(err) {});
-        })
-        .catch(function(err) {
-
+  function shareImage(obj){
+    
+    obj.data = obj.data.replace(/^data:image\/(png|gif|jpeg);base64,/,'');
+    imgur.uploadBase64(obj.data)
+    .then(function (json) {
+        obj.data = json.data.link;
+        clients.forEach(function(element, index, array) {
+          io.to(element).emit('image', obj);
         });
-    } catch (err) {
-      io.to(obj.id).emit("Error", err.message);
-      console.error(err.message);
-
-    } finally {
-
-    }
+        fs.appendFile('message.html', "<li class='msgimg u" + obj.user.hashCode() + "''>" + escape(obj.name) + ": <img class='image' src='" + obj.data + "'>" + "</li>", function(err) {});
+    })
+    .catch(function (err) {
+        io.to(obj.id).emit("Error", err.message);
+        console.error(err.message);
+    });
   }
 
   socket.on('image', function(obj) {
