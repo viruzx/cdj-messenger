@@ -157,24 +157,24 @@ $(window).on('resize', function() {
 });
 //Sending messages
 
-  $('form').submit(function() {
-    if (authenticated) {
+$('form').submit(function() {
+  if (authenticated) {
     //Create object with the username, message and their key.
     var obj = {
       user: uservar.usr,
       msg: $('#m').val(),
       key: uservar.key
     };
-      socket.emit('chat message', obj);
+    socket.emit('chat message', obj);
     //Clear message field
     $('#m').val('');
 
     timeoutFunction()
       //Prevent form's default action
 
-      }
-    return false;
-  });
+  }
+  return false;
+});
 
 //Sockets
 //Init socket.io since everything
@@ -369,9 +369,9 @@ socket.on('typing', function(data) {
   if (data.username != uservar.usr) {
     showtyping(data);
   }
-  if(isScrolledToBottom){
-      out.scrollTop = out.scrollHeight - out.clientHeight;
-    }
+  if (isScrolledToBottom) {
+    out.scrollTop = out.scrollHeight - out.clientHeight;
+  }
 
   adjust();
 
@@ -401,19 +401,31 @@ function previewFile() {
   }
 }
 $("body").bind("DOMSubtreeModified", function() {
-  if(isScrolledToBottom){
+  if (isScrolledToBottom) {
+    out.scrollTop = out.scrollHeight - out.clientHeight;
+  }
+  isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+  $("img").load(function() {
+    if (isScrolledToBottom) {
       out.scrollTop = out.scrollHeight - out.clientHeight;
     }
     isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+  });
 });
-$( "#messages" ).scroll(function() {
+$("#messages").scroll(function() {
   isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
 });
 new ResizeSensor(jQuery('#m'), function() {
-  if(isScrolledToBottom){
-      out.scrollTop = out.scrollHeight - out.clientHeight;
-    }
-    isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+  if (isScrolledToBottom) {
+    out.scrollTop = out.scrollHeight - out.clientHeight;
+  }
+  isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+});
+$('#m').bind('resize', function() {
+  if (isScrolledToBottom) {
+    out.scrollTop = out.scrollHeight - out.clientHeight;
+  }
+  isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
 });
 //Make everything functional
 $(document).ready(function() {
