@@ -400,6 +400,7 @@ function previewFile() {
     reader.readAsDataURL(file);
   }
 }
+
 $("body").bind("DOMSubtreeModified", function() {
   if (isScrolledToBottom) {
     out.scrollTop = out.scrollHeight - out.clientHeight;
