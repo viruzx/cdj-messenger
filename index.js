@@ -186,7 +186,7 @@ io.on('connection', function(socket) {
         clients.forEach(function(element, index, array) {
           io.to(element).emit('chat message', obj);
         });
-        fs.appendFile('message.html', "<li class='msgtxt u" + obj.user.hashCode() + "''>" + escape(obj.name + ": " + obj.msg) + "</li>", function(err) {});
+        fs.appendFile('message.html', "<li class='msgtxt u" + obj.user.hashCode() + "''><b>" + obj.name + ":</b> " + escape(obj.msg) + "</li>", function(err) {});
       } else {
         console.log("Message ignored because null.");
       }
@@ -199,7 +199,7 @@ io.on('connection', function(socket) {
 
   var imgur = require('imgur');
   function shareImage(obj){
-    
+
     obj.data = obj.data.replace(/^data:image\/(png|gif|jpeg);base64,/,'');
     imgur.uploadBase64(obj.data)
     .then(function (json) {
