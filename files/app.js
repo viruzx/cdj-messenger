@@ -134,9 +134,9 @@ var uservar = {
 
 function adjust() {
   //Decide on spacing
-  var totalh = $("body").outerHeight();
+  var totalh = document.documentElement.clientHeight;
   var inputheight = $(".sending").outerHeight();
-  var alerth = 45;
+  var alerth = 45 + 57;
   var messageh = $("#messages").height(totalh - inputheight - alerth);
   //Add .you class to owners' messages
   $(".u" + uservar.usr.hashCode()).addClass('you');
