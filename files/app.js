@@ -38,30 +38,6 @@ window.addEventListener('OnMsg', function(e) {
       play_beep();
     }
 
-
-    // request permission on page load
-    document.addEventListener('DOMContentLoaded', function() {
-      if (Notification.permission !== "granted")
-        Notification.requestPermission();
-    });
-
-    function notifyMe() {
-      if (!Notification) {
-        return;
-      }
-
-      if (Notification.permission !== "granted")
-        Notification.requestPermission();
-      else {
-        var notification = new Notification('New Message!', {
-          icon: 'http://www.iconsdb.com/icons/preview/caribbean-blue/message-2-xxl.png',
-          body: e.name + ": " + e.msg,
-        });
-
-      }
-
-    }
-
   }
 });
 
@@ -77,7 +53,7 @@ function createlinks() {
     // Get the content
     var str = $(this).html();
     // Set the regex string
-    var regex = /(https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w\/_\.]*(\?\S+)?)?)?)/ig
+    var regex = /(https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w\/_\-\@\.]*(\?\S+)?)?)?)/ig
       // Replace plain text links by hyperlinks
     var replaced_text = str.replace(regex, "<a href='$1' target='_blank'>$1</a>");
     // Echo link

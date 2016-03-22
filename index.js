@@ -241,12 +241,10 @@ io.on('connection', function(socket) {
       if (obj.state) {
         clients.forEach(function(element, index, array) {
           io.to(element).emit('typing', obj);
-          console.log(obj.username + " is typing.");
         });
       } else {
         clients.forEach(function(element, index, array) {
           io.to(element).emit('stoptyping', obj);
-          console.log(obj.username + " is not longer typing.");
         });
       }
 

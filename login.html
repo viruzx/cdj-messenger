@@ -58,10 +58,10 @@
 </body>
 <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/js/foundation.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/js/foundation.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
-<script src="http://res.cloudinary.com/dwooxisgf/raw/upload/v1455675569/jquery.titlealert_he5vvp.js"></script>
+<script src="https://res.cloudinary.com/dwooxisgf/raw/upload/v1455675569/jquery.titlealert_he5vvp.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/js/foundation/foundation.alert.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
 
@@ -83,7 +83,7 @@
   }
   $('form').submit(function() {
     //Create object with the username, message and their key.
-    var user = $('#u').val();
+    var user = $('#u').val().toLowerCase();
     var pass = $('#p').val();
     localStorage.username = user;
     localStorage.pass = pass.hashCode();

@@ -1,4 +1,3 @@
 git stage .
 git commit -m "$*"
 git push
-nc knyz.org 737
