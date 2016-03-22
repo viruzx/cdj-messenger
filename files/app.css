@@ -1,4 +1,4 @@
-.chatcontainer{
+.chatcontainer {
   height: 100%;
 }
 a.fancybox img {
@@ -78,6 +78,7 @@ a.fancybox:hover img {
 .you {
   text-align: right;
 }
+
 /*.top-bar {
   position: fixed;
   right: 0;
@@ -86,11 +87,15 @@ a.fancybox:hover img {
   margin: auto;
   z-index: 999;
 }*/
+
 .top-bar.expanded {
   background: #333;
   z-index: 999;
+  position: fixed;
+  margin-top: -45px;
+  width: 100%;
 }
-.reveal-modal{
+.reveal-modal {
   z-index: 9999;
 }
 .main {
@@ -139,6 +144,6 @@ a.fancybox:hover img {
 .download:hover {
   opacity: 1;
 }
-.msgimg b{
+.msgimg b {
   vertical-align: top;
 }
