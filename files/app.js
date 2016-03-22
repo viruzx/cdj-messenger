@@ -12,11 +12,11 @@ var enable_beep = true;
 //Thing to detect focus
 var isActive = true;
 var authenticated = false;
-window.onfocus = function() {
+$(".chatcontainer").onfocus = function() {
   isActive = true;
 };
 
-window.onblur = function() {
+$(".chatcontainer").onblur = function() {
   isActive = false;
 };
 
