@@ -411,7 +411,7 @@ function previewFile() {
   }
 }
 
-$("body").bind("DOMSubtreeModified", function() {
+$("#messages").bind("DOMSubtreeModified", function() {
   if (isScrolledToBottom) {
     out.scrollTop = out.scrollHeight - out.clientHeight;
   }
@@ -445,6 +445,8 @@ $(window).resize(function() {
   isScrolledToBottom = true;
   out.scrollTop = out.scrollHeight - out.clientHeight;
 });
+
+
 //PAste Image Module
 document.getElementById('m').onpaste = function (event) {
   // use event.originalEvent.clipboard for newer chrome versions
