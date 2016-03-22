@@ -203,7 +203,8 @@ io.on('connection', function(socket) {
     obj.data = obj.data.replace(/^data:image\/(png|gif|jpeg);base64,/,'');
     imgur.uploadBase64(obj.data)
     .then(function (json) {
-        obj.data = json.data.link;
+      //Force https
+        obj.data = json.data.link.replace("http:", "https:");
         clients.forEach(function(element, index, array) {
           io.to(element).emit('image', obj);
         });
