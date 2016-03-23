@@ -274,6 +274,20 @@ io.on('connection', function(socket) {
       io.to(socket.id).emit("authentication", false);
     }
   });
+
+  //Forum module starts
+  socket.on('loadAllThreads', function(obj) {
+    if (checkkey(obj.user, obj.key)) {
+      db.search('Threads', "type:thread")
+        .then(function(result) {
+          var items = result.body.results;
+          io.to(socket.id).emit("Thread List", items);
+        })
+        .fail(function(err) {
+
+        });
+    }
+  });
 });
 
 http.listen(3000, function() {

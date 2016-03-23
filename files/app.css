@@ -147,3 +147,14 @@ a.fancybox:hover img {
 .msgimg b {
   vertical-align: top;
 }
+.preview-image {
+  text-align: center;
+  background-color: #676767;
+}
+.preview-image.medium-3 img {
+  max-height: 200px;
+  max-width: 100%;
+}
+.row .row {
+  margin: 0 !important;
+}

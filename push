@@ -1,3 +1,4 @@
+#This tool has nothing to do with the project. It just speeds up development for me. ;)
 git stage .
 git commit -m "$*"
 git push
