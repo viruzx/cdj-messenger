@@ -7,22 +7,20 @@ var request = require('sync-request');
 var http = require('http').Server(app);
 //Socket.io component
 var io = require('socket.io')(http);
-//File reading/writing tools
-var fs = require('fs');
 //Debugging tools
 var util = require('util');
 //Database tools
-var db = require('orchestrate')("8db57077-993b-4c5a-8f83-3d3fc99b3304");
-//Sanitization tools
-var Entities = require('html-entities').AllHtmlEntities;
-entities = new Entities();
+var db = require('orchestrate')(process.argv[2]);
 //Valid keys will be stored in this array
 var validkeys = [];
 //An array storring authenticated clients
 //In order to only emit to those
 var clients = [];
 
-
+//hashCode Module
+/*
+  The hashCode module is a simple cryptographic prototype that will allow to get a hash of any string.
+*/
 String.prototype.hashCode = function() {
   var hash = 0,
     i, chr, len;
@@ -36,9 +34,10 @@ String.prototype.hashCode = function() {
 };
 
 
+/* Legacy Login
 function login_legacy(user, pass) {
   //Horribly done login system
-  var turl = "https://8db57077-993b-4c5a-8f83-3d3fc99b3304@api.orchestrate.io/v0/users/" + user;
+  var turl = "https://orchestrate_api_key@api.orchestrate.io/v0/users/" + user;
   var resq = "";
   try {
     resq = request('GET', turl);
@@ -64,40 +63,50 @@ function login_legacy(user, pass) {
   }
   return false;
   console.log("Could not authenticate");
-}
+}*/
 
+//This NEEDS to be refactored to load entire user database into memory from the start. Doing this will allow us to cut the request_sync dependency (which is good!). Anyways...
+
+//getName Module:
+/*
+  The get name module is designed to associate the user id with a username.
+*/
 var namelist = [];
 
 function getname(id) {
   //If your system doesn't support nick names uncomment
   //return id;
+
+  //Does the name exist in memory?
   if (namelist[id] == undefined) {
+    //No!
+    //Get the name
     var turl = "https://8db57077-993b-4c5a-8f83-3d3fc99b3304@api.orchestrate.io/v0/users/" + id;
     var resq = request('GET', turl);
     var hexdata = resq.getBody();
     var data = new Buffer(hexdata, 'hex').toString('utf8');
     var obj = JSON.parse(data);
+    //Store in memory
     namelist[id] = obj.name;
+    //Return
     return obj.name;
   } else {
+    //Yes!
+    //Return
     return namelist[id];
   }
 
 }
 
-
-//Send out the default chat client for the root
+//Send out login page. (No backend code whatsoever for this.)
 app.get('/login', function(req, res) {
   res.sendFile(__dirname + '/login.html');
 });
+
+//Send out the default chat client for the root
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/client.html');
 });
-
-//Escape HTML entities
-function escape(str) {
-  return entities.encode(str);
-}
 
 //Check key (requires username and key)
 function checkkey(user, key) {
@@ -121,27 +130,19 @@ app.get('/previous/:user/:key', function(req, res) {
   }
 });
 */
+
 //Probably a very serious security flaw :/
 //Update: Not actually a security flaw! (express handles it)
-//Start :file with .. does something weird
+//Start :file with ".." does something weird
+
+//Loads static files from the /files/ directory such as images, css, js, etc..
 app.get('/files/:file', function(req, res) {
   var filename = req.params.file;
   res.sendFile(__dirname + '/files/' + filename);
 });
-Array.prototype.remove = function() {
-  var what, a = arguments,
-    L = a.length,
-    ax;
-  while (L && this.length) {
-    what = a[--L];
-    while ((ax = this.indexOf(what)) !== -1) {
-      this.splice(ax, 1);
-    }
-  }
-  return this;
-};
 
 
+//Login Module
 var clients = [];
 
 function login(user, pass, sid, key) {
@@ -205,8 +206,6 @@ io.on('connection', function(socket) {
           io.to(element).emit('chat message', obj);
         });
         db.post('messages', obj);
-      } else {
-        console.log("Message ignored because null.");
       }
     } else {
       //Notify about issues concerning authenication
@@ -222,7 +221,8 @@ io.on('connection', function(socket) {
     obj.data = obj.data.replace(/^data:image\/(png|gif|jpeg);base64,/, '');
     imgur.uploadBase64(obj.data)
       .then(function(json) {
-        //Force https
+        delete obj.id;
+          //Force https
         obj.data = json.data.link.replace("http:", "https:");
         clients.forEach(function(element, index, array) {
           io.to(element).emit('image', obj);
