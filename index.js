@@ -108,7 +108,8 @@ function checkkey(user, key) {
   }
   return (validkeys.indexOf(check) > -1);
 }
-//Load previous messages (Requires a valid key)
+/* Legacy prevmsg
+Load previous messages (Requires a valid key)
 app.get('/previous/:user/:key', function(req, res) {
   var key = req.params.key;
   var user = req.params.user;
@@ -119,7 +120,7 @@ app.get('/previous/:user/:key', function(req, res) {
     console.log("Attemped to get messages with invalid key!");
   }
 });
-
+*/
 //Probably a very serious security flaw :/
 //Update: Not actually a security flaw! (express handles it)
 //Start :file with .. does something weird
@@ -157,6 +158,9 @@ function login(user, pass, sid, key) {
         console.log("User " + user + " failed to authenticate");
         io.to(sid).emit("authentication", false);
       }
+    }).fail(function(err) {
+      console.log("User " + user + " failed to authenticate (Does not exist!)");
+      io.to(sid).emit("authentication", false);
     })
 }
 io.on('connection', function(socket) {
@@ -178,15 +182,29 @@ io.on('connection', function(socket) {
   socket.on('auth', function(user) {
     login(user.usr, user.pass, socket.id, user.key);
   });
+  socket.on('prevmsg', function(obj) {
+    if (checkkey(obj.user, obj.key)) {
+      //Handle limits later on
+      db.list('messages')
+        .then(function(result) {
+          var items = result.body.results;
+          io.to(socket.id).emit("prevmsg", items);
+        })
+        .fail(function(err) {
+
+        });
+    }
+  });
   socket.on('chat message', function(obj) {
     if (checkkey(obj.user, obj.key)) {
       if (!(obj.msg == "")) {
         delete obj.key;
+        obj.type = "text";
         obj.name = getname(obj.user);
         clients.forEach(function(element, index, array) {
           io.to(element).emit('chat message', obj);
         });
-        fs.appendFile('message.html', "<li class='msgtxt u" + obj.user.hashCode() + "''><b>" + obj.name + ":</b> " + escape(obj.msg) + "</li>", function(err) {});
+        db.post('messages', obj);
       } else {
         console.log("Message ignored because null.");
       }
@@ -198,22 +216,24 @@ io.on('connection', function(socket) {
   });
 
   var imgur = require('imgur');
-  function shareImage(obj){
 
-    obj.data = obj.data.replace(/^data:image\/(png|gif|jpeg);base64,/,'');
+  function shareImage(obj) {
+
+    obj.data = obj.data.replace(/^data:image\/(png|gif|jpeg);base64,/, '');
     imgur.uploadBase64(obj.data)
-    .then(function (json) {
-      //Force https
+      .then(function(json) {
+        //Force https
         obj.data = json.data.link.replace("http:", "https:");
         clients.forEach(function(element, index, array) {
           io.to(element).emit('image', obj);
         });
-        fs.appendFile('message.html', "<li class='msgimg u" + obj.user.hashCode() + "''><b>" + escape(obj.name) + ":</b> <img class='image' src='" + obj.data + "'>" + "</li>", function(err) {});
-    })
-    .catch(function (err) {
+        obj.type = "img";
+        db.post('messages', obj);
+      })
+      .catch(function(err) {
         io.to(obj.id).emit("Error", err.message);
         console.error(err.message);
-    });
+      });
   }
 
   socket.on('image', function(obj) {

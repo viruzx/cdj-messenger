@@ -20,26 +20,7 @@ window.onblur = function() {
   isActive = false;
 };
 
-//Events for API
-//TODO: Complete API
-function NewMsg(obj) {
-  var evt = new CustomEvent('OnMsg', {
-    name: obj.user,
-    msg: obj.msg
-  });
 
-  window.dispatchEvent(evt);
-}
-
-//Example to handle event:
-window.addEventListener('OnMsg', function(e) {
-  if (!isActive) {
-    if (enable_beep) {
-      play_beep();
-    }
-
-  }
-});
 
 
 //Utilities
@@ -120,9 +101,17 @@ function adjust() {
 
 }
 
-//Load previous messages
 function prevmsg() {
+
   console.log("Downloading messages");
+  var obj = {
+    user: uservar.usr,
+    key: uservar.key
+  };
+  socket.emit('prevmsg', obj);
+
+  /*
+  Legacy prevmsg
   $.get("/previous/" + uservar.usr + "/" + uservar.key, function(data) {
     $("#messages").html(data);
     adjust();
@@ -133,7 +122,7 @@ function prevmsg() {
       showimage($(this).attr('src'));
       $(".download").attr("href", $(".imgcontainer img").attr("src"));
     });
-  });
+  });*/
 }
 
 $(window).on('resize', function() {
@@ -165,9 +154,7 @@ $('form').submit(function() {
 //Init socket.io since everything
 var socket = io();
 //Recieve chat message
-socket.on('chat message', function(obj) {
-  //Trigger Event
-  NewMsg(obj);
+function addMsg(obj) {
   /*
   The message container will get appending a message with the
   class of the sender which will be later associated with the
@@ -179,7 +166,37 @@ socket.on('chat message', function(obj) {
   */
 
   $('#messages').append('<li class="msgtxt u' + obj.user.hashCode() + '"><b>' + obj.name + ":</b> " + htmlEntities(obj.msg) + "</li>");
+}
 
+//Load previous messages
+socket.on('prevmsg', function(data) {
+  data.forEach(function(dataset, index, array) {
+    if (dataset.value.type == "img"){
+      addimg(dataset.value);
+    } else {
+      addMsg(dataset.value);
+    }
+  });
+  adjust();
+  console.log("Downloaded messages");
+
+  createlinks();
+  $(".image").on('click', function(e) {
+    showimage($(this).attr('src'));
+    $(".download").attr("href", $(".imgcontainer img").attr("src"));
+  });
+
+});
+
+socket.on('chat message', function(obj) {
+  addMsg(obj);
+
+  if (!isActive) {
+    if (enable_beep) {
+      play_beep();
+    }
+
+  }
   //Adjust again just to make sure.
   //This function also calls to add relevant classes
   if (obj.msg.indexOf("http") > -1) {
@@ -195,13 +212,13 @@ socket.on('chat message', function(obj) {
     duration: 0,
     interval: 700
   });
-
-
 });
-socket.on('image', function(obj) {
 
-  console.log($('#messages').outerHeight());
+function addimg(obj) {
   $('#messages').append($('<li class="msgimg u' + obj.user.hashCode() + '">').html("<b>" + obj.name + ":</b> <img class='image' src='" + obj.data + "'>"));
+}
+socket.on('image', function(obj) {
+  addimg(obj);
 
   //Adjust again just to make sure.
   //This function also calls to add relevant classes
@@ -424,9 +441,9 @@ $(window).resize(function() {
 
 
 //PAste Image Module
-document.getElementById('m').onpaste = function (event) {
+document.getElementById('m').onpaste = function(event) {
   // use event.originalEvent.clipboard for newer chrome versions
-  var items = (event.clipboardData  || event.originalEvent.clipboardData).items;
+  var items = (event.clipboardData || event.originalEvent.clipboardData).items;
   console.log(JSON.stringify(items)); // will give you the mime types
   // find pasted image among pasted items
   var blob = null;
