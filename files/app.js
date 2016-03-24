@@ -98,7 +98,6 @@ function adjust() {
   //Add .you class to owners' messages
   $(".u" + uservar.usr.hashCode()).addClass('you');
 
-
 }
 
 function prevmsg() {

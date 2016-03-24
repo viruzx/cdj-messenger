@@ -22,18 +22,34 @@
   </div>
   <div class="tabs-content">
     <div class="content" id="forum">
-      <div class="row container">
-        <dl class="sub-nav">
-          <dt>Filter:</dt>
-          <dd class="active no-filter"><a href="#">All</a></dd>
-          <dd><a href="#">Subject 1</a></dd>
-          <dd><a href="#">Subject 2</a></dd>
-        </dl>
-        <div class="row listing">
 
+      <ul class="tabs vertical views" data-tab>
+        <li class="tab-title active"><a href="#listing">Browse</a></li>
+        <li class="tab-title"><a href="#new-thread">New</a></li>
+        <li class="tab-title"><a href="#open-thread">Current</a></li>
+      </ul>
+      <div class="tabs-content">
+        <div class="content active" id="listing">
+          <div class="row container">
+            <dl class="sub-nav">
+              <dt>Filter:</dt>
+              <dd class="active no-filter"><a href="#">All</a></dd>
+              <dd><a href="#">Subject 1</a></dd>
+              <dd><a href="#">Subject 2</a></dd>
+            </dl>
+            <div class="row listing loading"></div>
+
+          </div>
         </div>
-
+        <div class="content" id="new-thread">
+          <p>Here you can make a new thread</p>
+        </div>
+        <div class="content" id="open-thread">
+          <p>This will be full view (Replies)</p>
+        </div>
       </div>
+
+
     </div>
     <div class="content active chatcontainer" id="chat">
       <div id="image-modal" class="reveal-modal full-screen" data-reveal aria-hidden="true" role="dialog">

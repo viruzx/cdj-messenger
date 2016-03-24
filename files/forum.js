@@ -19,7 +19,7 @@ var forumaccess = {
 
 
 function listThread(poster, title, image, content, id) {
-  $( ".listing" ).append( '<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + image + '"></div> <div class="column small-12 medium-9 preview-content"> <h2>' + title + '</h2> <h4>By: ' + poster + '</h4> <p>' + content + ' </p> <ul class="button-group"> <li><a href="#" class="button small">Replies</a></li>  <li><a href="#" class="button small">Add Reply</a></li></ul> </div> </div>' );
+  $( ".listing" ).append( '<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + image + '"></div> <div class="column small-12 large-7 medium-6 end preview-content"> <h2>' + title + '</h2> <h4>By: ' + poster + '</h4> <p>' + content + ' </p> <ul class="button-group"> <li><a href="#" class="button small">Full View</a></li></ul> </div> </div>' );
 }
 
 socket.on('Thread List', function(data) {
@@ -30,6 +30,7 @@ socket.on('Thread List', function(data) {
   $(".preview-image").click(function() {
     $(this).toggleClass("medium-3");
   });
+  $(".listing").removeClass("loading");
 });
 $("dd").click(function() {
   $("dd").removeClass("active");

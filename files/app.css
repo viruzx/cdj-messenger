@@ -158,3 +158,10 @@ a.fancybox:hover img {
 .row .row {
   margin: 0 !important;
 }
+.listing.loading {
+  background-image: url(/files/loader.gif);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 75vh;
+}
