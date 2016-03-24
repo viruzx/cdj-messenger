@@ -277,20 +277,40 @@ io.on('connection', function(socket) {
 
   //Forum module starts
   socket.on('loadAllThreads', function(obj) {
-    console.log("test");
     if (checkkey(obj.user, obj.key)) {
-      db.search('Threads', "type:thread")
+      db.search('Threads', "type:thread", {
+          sort: '@path.reftime:asc'
+        })
         .then(function(result) {
           var items = result.body.results;
           io.to(socket.id).emit("Thread List", items);
-          console.log(items);
         })
         .fail(function(err) {
           console.log(err);
         });
     }
   });
+  socket.on('loadFilterThreads', function(obj) {
+    if (checkkey(obj.user, obj.key)) {
+      var searchStr = "type:thread AND cat:" + obj.filter;
+      if (obj.filter == "0"){
+        searchStr = "type:thread";
+      }
 
+      console.log("type:thread AND cat:" + obj.filter);
+      db.search('Threads', searchStr , {
+          sort: '@path.reftime:asc'
+        })
+        .then(function(result) {
+          var items = result.body.results;
+          console.log(items);
+          io.to(socket.id).emit("Thread List", items);
+        })
+        .fail(function(err) {
+          console.log(err);
+        });
+    }
+  });
   socket.on('image2url', function(obj) {
     if (checkkey(obj.user, obj.key)) {
       obj.data = obj.data.replace(/^data:image\/(png|gif|jpeg);base64,/, '');
@@ -307,13 +327,23 @@ io.on('connection', function(socket) {
 
   socket.on('postThread', function(obj) {
     if (checkkey(obj.user, obj.key)) {
-      delete obj.key;
-      obj.post.poster = getname(obj.user);
-      delete obj.user;
-      db.post('Threads', obj.post);
-      clients.forEach(function(element, index, array) {
-        io.to(element).emit('new thread', obj.post);
-      });
+      if (!(obj.post.image == "" && obj.post.title == "" && obj.post.content == "")) {
+        delete obj.key;
+        obj.post.poster = getname(obj.user);
+        delete obj.user;
+        db.post('Threads', obj.post)
+          .then(function(data) {
+            console.log(data.path.key);
+            obj.post.id = data.path.key;
+            clients.forEach(function(element, index, array) {
+              io.to(element).emit('new thread', obj.post);
+            });
+
+          }).fail(function(err) {
+
+          });
+      }
+
     }
   });
 });

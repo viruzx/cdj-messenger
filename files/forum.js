@@ -21,32 +21,39 @@ $('#chat').on('toggled', function(event, tab) {
 
 
 function listThread(poster, title, image, content, id) {
-  $(".listing").append('<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + image + '"></div> <div class="column small-12 medium-8 end preview-content"> <h2>' + title + '</h2> <h4>By: ' + poster + '</h4> <p>' + content + ' </p> <ul class="button-group"> <li><a href="#" class="button small">Full View</a></li></ul> </div> </div><hr>');
+  $(".listing").prepend('<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + image + '"></div> <div class="column small-12 medium-8 end preview-content"> <h2>' + title + '</h2> <h4>By: ' + poster + '</h4> <p>' + content + ' </p> <ul class="button-group"> <li><a href="#" class="button small">Full View</a></li></ul> </div> </div><hr>');
+
+  $(".preview-image").click(function() {
+    $(this).toggleClass("medium-3");
+  });
 }
 socket.on('new thread', function(data) {
-  $(".listing").addClass("loading");
-  socket.emit("loadAllThreads", forumaccess);
+  listThread(data.poster, data.title, data.image, data.content, data.id);
 });
 socket.on('Thread List', function(data) {
+  console.log("Got Thread List!", data);
+  $(".listing").html("");
   data.forEach(function(element, index, array) {
     var data = element.value;
     data.id = element.path.key;
     listThread(data.poster, data.title, data.image, data.content, data.id);
-  });
-  $(".preview-image").click(function() {
-    $(this).toggleClass("medium-3");
   });
   $(".listing").removeClass("loading");
 });
 $("dd").click(function() {
   $("dd").removeClass("active");
   $(this).addClass("active");
+  var loadobj = forumaccess;
+  loadobj.filter = $(this).data("filter");
+  $(".listing").addClass("loading");
+  socket.emit("loadFilterThreads", loadobj);
 });
 socket.on('forumimg', function(data) {
   $(".forumupload").html("<h2>Image Uploaded!</h2><br><h3 class='uimgurl'>" + data + "</h3>");
 });
 
 function previewFile2() {
+  $(".forumupload").append("<img src='/files/loader.gif'>");
   var file = document.querySelector('.upload-space2').files[0];
   var reader = new FileReader();
 
@@ -73,10 +80,17 @@ function doPost(){
     post: {
       "image": $(".uimgurl").text(),
       "poster": uservar.usr,
-      "title": $(".postTitle").val(),
-      "content": $(".postContent").val(),
+      "title": htmlEntities($(".postTitle").val()),
+      "content": htmlEntities($(".postContent").val()),
+      "cat": $(".catforum").val(),
       "type": "thread"
     }
   }
-  socket.emit("postThread", postObj);
+  if (!(postObj.post.image == "" && postObj.post.title == "" && postObj.post.content=="")){
+    socket.emit("postThread", postObj);
+    $("#browse").click();
+  } else {
+    alert("Post is empty!");
+  }
+
 }

@@ -25,7 +25,7 @@
 
       <div class="row container">
         <ul class="tabs" data-tab>
-          <li class="tab-title active"><a href="#listing">Browse</a></li>
+          <li class="tab-title active"><a id="browse" href="#listing">Browse</a></li>
           <li class="tab-title"><a href="#new-thread">New</a></li>
           <li class="tab-title"><a href="#open-thread">Current</a></li>
       </div>
@@ -35,9 +35,12 @@
           <div class="row container">
             <dl class="sub-nav">
               <dt>Filter:</dt>
-              <dd class="active no-filter"><a href="#">All</a></dd>
-              <dd><a href="#">Subject 1</a></dd>
-              <dd><a href="#">Subject 2</a></dd>
+              <dd data-filter="0" class="active no-filter"><a href="#">All</a></dd>
+              <dd data-filter="1"><a href="#">Exams</a></dd>
+              <dd data-filter="2"><a href="#">Devoirs</a></dd>
+              <dd data-filter="3"><a href="#">Musique</a></dd>
+              <dd data-filter="4"><a href="#">Divers</a></dd>
+              <dd data-filter="5"><a href="#">News</a></dd>
             </dl>
             <div class="row listing loading"></div>
 
@@ -58,12 +61,13 @@
                 </div>
               </div>
               <div class="small-12 medium-6 columns">
-                <select>
-                  <option value="none">Category: none</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
+                <select class="catforum">
+                  <option value="0">Category: Aucun</option>
+                  <option value="1">Exams</option>
+                  <option value="2">Devoirs</option>
+                  <option value="3">Musique</option>
+                  <option value="4">Divers</option>
+                  <option value="5">News</option>
                 </select>
               </div>
               <div class="small-12 forumupload" style="text-align: center;">
@@ -75,14 +79,15 @@
                   <textarea class="postContent" style="height: 200px" placeholder="Message"></textarea>
                 </div>
               </div>
-              <div class="row">
-                <div class="small-12 columns">
-                  <center>
-                    <a onclick="doPost();" class="btn expand large">Post</a>
-                  </center>
-                </div>
-              </div>
+
             </form>
+            <div class="row">
+              <div class="small-12 columns">
+                <center>
+                  <button onclick="doPost();" class="btn expand large">Post</button>
+                </center>
+              </div>
+            </div>
           </div>
         </div>
         <div class="content" id="open-thread">
