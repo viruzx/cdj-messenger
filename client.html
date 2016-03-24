@@ -23,11 +23,11 @@
   <div class="tabs-content">
     <div class="content" id="forum">
 
-        <div class="row container">
-      <ul class="tabs" data-tab>
-        <li class="tab-title active"><a href="#listing">Browse</a></li>
-        <li class="tab-title"><a href="#new-thread">New</a></li>
-        <li class="tab-title"><a href="#open-thread">Current</a></li>
+      <div class="row container">
+        <ul class="tabs" data-tab>
+          <li class="tab-title active"><a href="#listing">Browse</a></li>
+          <li class="tab-title"><a href="#new-thread">New</a></li>
+          <li class="tab-title"><a href="#open-thread">Current</a></li>
       </div>
       </ul>
       <div class="tabs-content">
@@ -45,15 +45,47 @@
         </div>
         <div class="content" id="new-thread">
 
-            <div class="row container">
-          <p>Here you can make a new thread</p>
-        </div>
+          <div class="row container">
+            <form>
+              <div class="small-12 medium-6 columns">
+                <div class="row collapse prefix-radius">
+                  <div class="small-3 columns">
+                    <span class="prefix">Title</span>
+                  </div>
+                  <div class="small-9 columns">
+                    <input type="text" required>
+                  </div>
+                </div>
+              </div>
+              <div class="small-12 medium-6 columns">
+                <select>
+                  <option value="1">Category: none</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                </select>
+              </div>
+              <div class="row">
+                <div class="small-12 columns">
+                  <textarea style="height: 300px" placeholder="Message"></textarea>
+                </div>
+              </div>
+              <div class="row">
+                <div class="small-12 columns">
+                  <center>
+                <button class="btn expand large" type="submit">Post</button>
+                </center>
+              </div>
+              </div>
+            </form>
+          </div>
         </div>
         <div class="content" id="open-thread">
 
-            <div class="row container">
-          <p>This will be full view (Replies)</p>
-        </div>
+          <div class="row container">
+            <p>This will be full view (Replies)</p>
+          </div>
         </div>
       </div>
 

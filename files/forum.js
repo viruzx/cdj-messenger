@@ -19,7 +19,7 @@ var forumaccess = {
 
 
 function listThread(poster, title, image, content, id) {
-  $( ".listing" ).append( '<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + image + '"></div> <div class="column small-12 medium-8 end preview-content"> <h2>' + title + '</h2> <h4>By: ' + poster + '</h4> <p>' + content + ' </p> <ul class="button-group"> <li><a href="#" class="button small">Full View</a></li></ul> </div> </div>' );
+  $( ".listing" ).append( '<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + image + '"></div> <div class="column small-12 medium-8 end preview-content"> <h2>' + title + '</h2> <h4>By: ' + poster + '</h4> <p>' + content + ' </p> <ul class="button-group"> <li><a href="#" class="button small">Full View</a></li></ul> </div> </div><hr>' );
 }
 
 socket.on('Thread List', function(data) {
