@@ -384,7 +384,7 @@ socket.on('stoptyping', function(data) {
 });
 
 function previewFile() {
-  var file = document.querySelector('input[type=file]').files[0];
+  var file = document.querySelector('.upload-space').files[0];
   var reader = new FileReader();
 
   reader.addEventListener("load", function() {

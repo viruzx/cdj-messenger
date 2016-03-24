@@ -222,7 +222,7 @@ io.on('connection', function(socket) {
     imgur.uploadBase64(obj.data)
       .then(function(json) {
         delete obj.id;
-          //Force https
+        //Force https
         obj.data = json.data.link.replace("http:", "https:");
         clients.forEach(function(element, index, array) {
           io.to(element).emit('image', obj);
@@ -277,15 +277,43 @@ io.on('connection', function(socket) {
 
   //Forum module starts
   socket.on('loadAllThreads', function(obj) {
+    console.log("test");
     if (checkkey(obj.user, obj.key)) {
       db.search('Threads', "type:thread")
         .then(function(result) {
           var items = result.body.results;
           io.to(socket.id).emit("Thread List", items);
+          console.log(items);
         })
         .fail(function(err) {
-
+          console.log(err);
         });
+    }
+  });
+
+  socket.on('image2url', function(obj) {
+    if (checkkey(obj.user, obj.key)) {
+      obj.data = obj.data.replace(/^data:image\/(png|gif|jpeg);base64,/, '');
+      imgur.uploadBase64(obj.data)
+        .then(function(json) {
+          io.to(socket.id).emit('forumimg', json.data.link.replace("http:", "https:"));
+        })
+        .catch(function(err) {
+          io.to(socket.id).emit("Error", err.message);
+          console.error(err.message);
+        });
+    }
+  });
+
+  socket.on('postThread', function(obj) {
+    if (checkkey(obj.user, obj.key)) {
+      delete obj.key;
+      obj.post.poster = getname(obj.user);
+      delete obj.user;
+      db.post('Threads', obj.post);
+      clients.forEach(function(element, index, array) {
+        io.to(element).emit('new thread', obj.post);
+      });
     }
   });
 });

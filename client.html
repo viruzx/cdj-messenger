@@ -53,30 +53,34 @@
                     <span class="prefix">Title</span>
                   </div>
                   <div class="small-9 columns">
-                    <input type="text" required>
+                    <input type="text" class="postTitle"  required>
                   </div>
                 </div>
               </div>
               <div class="small-12 medium-6 columns">
                 <select>
-                  <option value="1">Category: none</option>
+                  <option value="none">Category: none</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
                   <option value="4">4</option>
                 </select>
               </div>
+              <div class="small-12 forumupload" style="text-align: center;">
+                <div class="uimgurl"></div>
+                <input type="file" class="upload-space2" onchange="previewFile2()">
+              </div>
               <div class="row">
                 <div class="small-12 columns">
-                  <textarea style="height: 300px" placeholder="Message"></textarea>
+                  <textarea class="postContent" style="height: 200px" placeholder="Message"></textarea>
                 </div>
               </div>
               <div class="row">
                 <div class="small-12 columns">
                   <center>
-                <button class="btn expand large" type="submit">Post</button>
-                </center>
-              </div>
+                    <a onclick="doPost();" class="btn expand large">Post</a>
+                  </center>
+                </div>
               </div>
             </form>
           </div>

@@ -68,7 +68,15 @@ a.fancybox:hover img {
   border-radius: 2px;
   padding: 30px;
 }
-
+.upload-space2{
+  height: 50px;
+background: #DADADA;
+font-family: monospace;
+border: 1px #B9B9B9 solid;
+border-radius: 2px;
+padding: 15px;
+width: 75% !important;
+}
 /*
   For messages that YOU send
   Rest will be aligned to left
@@ -164,4 +172,7 @@ a.fancybox:hover img {
   background-size: contain;
   background-repeat: no-repeat;
   height: 75vh;
+}
+.tabs-content {
+  margin-bottom: 0 !important;
 }
