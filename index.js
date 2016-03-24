@@ -186,10 +186,13 @@ io.on('connection', function(socket) {
   socket.on('prevmsg', function(obj) {
     if (checkkey(obj.user, obj.key)) {
       //Handle limits later on
-      db.list('messages')
+      db.list('messages', {
+          sort: '@path.reftime:desc',
+          limit: '100'
+        })
         .then(function(result) {
           var items = result.body.results;
-          io.to(socket.id).emit("prevmsg", items);
+          io.to(socket.id).emit("prevmsg", items.reverse());
         })
         .fail(function(err) {
 
@@ -279,7 +282,7 @@ io.on('connection', function(socket) {
   socket.on('loadAllThreads', function(obj) {
     if (checkkey(obj.user, obj.key)) {
       db.search('Threads', "type:thread", {
-          sort: '@path.reftime:asc'
+          sort: '@path.reftime:desc'
         })
         .then(function(result) {
           var items = result.body.results;
@@ -293,17 +296,16 @@ io.on('connection', function(socket) {
   socket.on('loadFilterThreads', function(obj) {
     if (checkkey(obj.user, obj.key)) {
       var searchStr = "type:thread AND cat:" + obj.filter;
-      if (obj.filter == "0"){
+      if (obj.filter == "0") {
         searchStr = "type:thread";
       }
 
       console.log("type:thread AND cat:" + obj.filter);
-      db.search('Threads', searchStr , {
-          sort: '@path.reftime:asc'
+      db.search('Threads', searchStr, {
+          sort: '@path.reftime:desc'
         })
         .then(function(result) {
           var items = result.body.results;
-          console.log(items);
           io.to(socket.id).emit("Thread List", items);
         })
         .fail(function(err) {
@@ -325,6 +327,17 @@ io.on('connection', function(socket) {
     }
   });
 
+  socket.on("loadSingleThread", function(obj) {
+    if (checkkey(obj.user, obj.key)) {
+      db.get('Threads', obj.id)
+        .then(function(res) {
+          res.body.id = obj.id;
+          io.to(socket.id).emit('open thread', res.body);
+        }).fail(function(err) {
+          console.log("Desired thread does not exist!");
+        })
+    }
+  })
   socket.on('postThread', function(obj) {
     if (checkkey(obj.user, obj.key)) {
       if (!(obj.post.image == "" && obj.post.title == "" && obj.post.content == "")) {

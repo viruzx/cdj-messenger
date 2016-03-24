@@ -166,7 +166,7 @@ width: 75% !important;
 .row .row {
   margin: 0 !important;
 }
-.listing.loading {
+.loading {
   background-image: url(/files/loader.gif);
   background-position: center center;
   background-size: contain;

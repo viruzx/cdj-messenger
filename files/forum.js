@@ -1,4 +1,3 @@
-
 var forumaccess = {
   user: uservar.usr,
   key: uservar.key
@@ -21,14 +20,41 @@ $('#chat').on('toggled', function(event, tab) {
 
 
 function listThread(poster, title, image, content, id) {
-  $(".listing").prepend('<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + image + '"></div> <div class="column small-12 medium-8 end preview-content"> <h2>' + title + '</h2> <h4>By: ' + poster + '</h4> <p>' + content + ' </p> <ul class="button-group"> <li><a href="#" class="button small">Full View</a></li></ul> </div> </div><hr>');
-
+  $(".listing").append('<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + htmlEntities(image) + '"></div> <div class="column small-12 medium-8 end preview-content"> <h2>' + htmlEntities(title) + '</h2> <h4>By: ' + htmlEntities(poster) + '</h4> <p>' + htmlEntities(content) + ' </p> <ul class="button-group"> <li><a href="#" onclick="loadThread(\'' + id + '\')" class="button small">Full View</a></li></ul> </div> </div><hr>');
+  $(".preview-image").unbind("click");
   $(".preview-image").click(function() {
     $(this).toggleClass("medium-3");
   });
 }
+function newThread(poster, title, image, content, id) {
+  $(".listing").prepend('<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + htmlEntities(image) + '"></div> <div class="column small-12 medium-8 end preview-content"> <h2>' + htmlEntities(title) + '</h2> <h4>By: ' + htmlEntities(poster) + '</h4> <p>' + htmlEntities(content) + ' </p> <ul class="button-group"> <li><a href="#" onclick="loadThread(\'' + id + '\')" class="button small">Full View</a></li></ul> </div> </div><hr>');
+  $(".preview-image").unbind("click");
+  $(".preview-image").click(function() {
+    $(this).toggleClass("medium-3");
+  });
+}
+
 socket.on('new thread', function(data) {
-  listThread(data.poster, data.title, data.image, data.content, data.id);
+  newThread(data.poster, data.title, data.image, data.content, data.id);
+});
+function loadThread(id){
+  var loadobj = forumaccess;
+  loadobj.id = id;
+  socket.emit("loadSingleThread", loadobj);
+  $("#openThread a").click();
+  $(".openThread").addClass("loading");
+
+}
+function openThread(poster, title, image, content, id) {
+  $(".openThread").html('<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + htmlEntities(image) + '"></div> <div class="column small-12 medium-8 end preview-content"> <h2>' + htmlEntities(title) + '</h2> <h4>By: ' + htmlEntities(poster) + '</h4> <p>' + htmlEntities(content) + ' </p> </div> </div>');
+  $(".preview-image").unbind("click");
+  $(".preview-image").click(function() {
+    $(this).toggleClass("medium-3");
+  });
+  $(".openThread").removeClass("loading");
+}
+socket.on('open thread', function(data) {
+  openThread(data.poster, data.title, data.image, data.content, data.id);
 });
 socket.on('Thread List', function(data) {
   console.log("Got Thread List!", data);
@@ -48,8 +74,12 @@ $("dd").click(function() {
   $(".listing").addClass("loading");
   socket.emit("loadFilterThreads", loadobj);
 });
+
+function removepostimg(){
+    $(".forumupload").html('<div class="uimgurl"></div><input type="file" class="upload-space2" onchange="previewFile2()">');
+}
 socket.on('forumimg', function(data) {
-  $(".forumupload").html("<h2>Image Uploaded!</h2><br><h3 class='uimgurl'>" + data + "</h3>");
+  $(".forumupload").html("<h2>Image Uploaded!</h2><br><h3 class='uimgurl'>" + data + "</h3><h3><a onclick='removepostimg()'>[Remove]</a></h3>");
 });
 
 function previewFile2() {
@@ -72,7 +102,7 @@ function previewFile2() {
   }
 }
 
-function doPost(){
+function doPost() {
 
   var postObj = {
     user: uservar.usr,
@@ -80,13 +110,13 @@ function doPost(){
     post: {
       "image": $(".uimgurl").text(),
       "poster": uservar.usr,
-      "title": htmlEntities($(".postTitle").val()),
-      "content": htmlEntities($(".postContent").val()),
+      "title": $(".postTitle").val(),
+      "content": $(".postContent").val(),
       "cat": $(".catforum").val(),
       "type": "thread"
     }
   }
-  if (!(postObj.post.image == "" && postObj.post.title == "" && postObj.post.content=="")){
+  if (!(postObj.post.image == "" && postObj.post.title == "" && postObj.post.content == "")) {
     socket.emit("postThread", postObj);
     $("#browse").click();
   } else {
