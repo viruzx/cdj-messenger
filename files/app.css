@@ -176,3 +176,6 @@ width: 75% !important;
 .tabs-content {
   margin-bottom: 0 !important;
 }
+img[src=""] {
+   display: none;
+}
