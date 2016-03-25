@@ -137,6 +137,8 @@ function doPost() {
   }
   if (!(postObj.post.image == "" && postObj.post.title == "" && postObj.post.content == "")) {
     socket.emit("postThread", postObj);
+    $('form').trigger('reset');
+    removepostimg2()
     $("#browse").click();
   } else {
     alert("Post is empty!");
@@ -193,6 +195,8 @@ function doReply() {
   }
   if (!(postObj.post.image == "" && postObj.post.title == "" && postObj.post.content == "")) {
     socket.emit("postReply", postObj);
+    removepostimg2()
+    $('form').trigger('reset');
   } else {
     alert("Post is empty!");
   }
