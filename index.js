@@ -291,7 +291,8 @@ io.on('connection', function(socket) {
   socket.on("loadSingleThread", function(obj) {
     if (checkkey(obj.user, obj.key)) {
       db.search('Threads', obj.id, {
-          sort: '@path.reftime:asc'
+          sort: '@path.reftime:asc',
+          limit: '100'
         })
         .then(function(result) {
           var items = result.body.results;
