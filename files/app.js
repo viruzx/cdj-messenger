@@ -35,7 +35,7 @@ function timeSince(timeStamp) {
         return parseInt(secondsPast/60) + ' minutes ago';
     }
     if(secondsPast <= 86400){
-        return parseInt(secondsPast/3600) + 'hours ago';
+        return parseInt(secondsPast/3600) + ' hours ago';
     }
     if(secondsPast > 86400){
           day = timeStamp.getDate();

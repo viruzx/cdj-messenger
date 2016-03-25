@@ -68,7 +68,7 @@ a.fancybox:hover img {
   border-radius: 2px;
   padding: 30px;
 }
-.upload-space2{
+.upload-space2, .upload-space3{
   height: 50px;
 background: #DADADA;
 font-family: monospace;
@@ -178,4 +178,10 @@ width: 75% !important;
 }
 img[src=""] {
    display: none;
+}
+.replyform{
+  display: none;
+}
+.selected .replyform{
+  display: block;
 }

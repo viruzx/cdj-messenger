@@ -95,6 +95,37 @@
           <div class="row container openThread">
             <h2>Select a thread to view</h2>
           </div>
+          <div class="row container replyform">
+            <form>
+              <div class="small-12 columns">
+                <div class="row collapse prefix-radius">
+                  <div class="small-3 columns">
+                    <span class="prefix">Title</span>
+                  </div>
+                  <div class="small-9 columns">
+                    <input type="text" class="postTitle2"  required>
+                  </div>
+                </div>
+              </div>
+              <div class="small-12 forumupload3" style="text-align: center;">
+                <div class="uimgurl2"></div>
+                <input type="file" class="upload-space3" onchange="previewFile3()">
+              </div>
+              <div class="row">
+                <div class="small-12 columns">
+                  <textarea class="postContent2" style="height: 200px" placeholder="Message"></textarea>
+                </div>
+              </div>
+
+            </form>
+            <div class="row">
+              <div class="small-12 columns">
+                <center>
+                  <button onclick="doReply();" class="btn expand large">Post</button>
+                </center>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
