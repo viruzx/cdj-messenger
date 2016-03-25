@@ -43,7 +43,7 @@ function loadThread(id){
   socket.emit("loadSingleThread", loadobj);
   $("#openThread a").click();
   $(".openThread").addClass("loading");
-  $(".openThread").addClass("t" + id);
+  $(".openThread").attr("id","t" + id));
   $("#open-thread").addClass("selected");
   $(".openThread").data("id", id);
 }
@@ -153,7 +153,7 @@ socket.on('postimg', function(data) {
   $(".forumupload3").html("<h2>Image Uploaded!</h2><br><h3 class='uimgurl2'>" + data + "</h3><h3><a onclick='removepostimg2()'>[Remove]</a></h3>");
 });
 socket.on('new reply', function(data) {
-  $(".t" + data.replyto).append('<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + htmlEntities(data.image) + '"></div> <div class="column small-12 medium-8 end preview-content"> <h2>' + htmlEntities(data.title) + '</h2> <h4>By: ' + htmlEntities(data.poster) + '</h4> <p>' + htmlEntities(data.content) + ' </p> </div> </div><hr>');
+  $("#t" + data.replyto).append('<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + htmlEntities(data.image) + '"></div> <div class="column small-12 medium-8 end preview-content"> <h2>' + htmlEntities(data.title) + '</h2> <h4>By: ' + htmlEntities(data.poster) + '</h4> <p>' + htmlEntities(data.content) + ' </p> </div> </div><hr>');
   $(".preview-image").unbind("click");
   $(".preview-image").click(function() {
     $(this).toggleClass("medium-3");
