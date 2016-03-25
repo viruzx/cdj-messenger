@@ -1,8 +1,6 @@
 //Pre-load utilities
 //Core software
 var app = require('express')();
-
-var request = require('sync-request');
 //HTTP server
 var http = require('http').Server(app);
 //Socket.io component
@@ -33,69 +31,13 @@ String.prototype.hashCode = function() {
   return hash;
 };
 
-
-/* Legacy Login
-function login_legacy(user, pass) {
-  //Horribly done login system
-  var turl = "https://orchestrate_api_key@api.orchestrate.io/v0/users/" + user;
-  var resq = "";
-  try {
-    resq = request('GET', turl);
-  } catch (e) {
-    return false;
-  } finally {
-
-  }
-  if (resq.statusCode != 200) {
-    console.log("Account does not exist");
-    return false;
-  }
-
-  var hexdata = resq.getBody();
-  var data = new Buffer(hexdata, 'hex').toString('utf8');
-  var obj = JSON.parse(data);
-  if (obj.password.hashCode() == pass) {
-    console.log("authenticated");
-    return true;
-  } else {
-    return false;
-    console.log("Could not authenticate");
-  }
-  return false;
-  console.log("Could not authenticate");
-}*/
-
-//This NEEDS to be refactored to load entire user database into memory from the start. Doing this will allow us to cut the request_sync dependency (which is good!). Anyways...
-
 //getName Module:
 /*
   The get name module is designed to associate the user id with a username.
 */
-var namelist = [];
 
 function getname(id) {
-  //If your system doesn't support nick names uncomment
-  //return id;
-
-  //Does the name exist in memory?
-  if (namelist[id] == undefined) {
-    //No!
-    //Get the name
-    var turl = "https://8db57077-993b-4c5a-8f83-3d3fc99b3304@api.orchestrate.io/v0/users/" + id;
-    var resq = request('GET', turl);
-    var hexdata = resq.getBody();
-    var data = new Buffer(hexdata, 'hex').toString('utf8');
-    var obj = JSON.parse(data);
-    //Store in memory
-    namelist[id] = obj.name;
-    //Return
-    return obj.name;
-  } else {
-    //Yes!
-    //Return
     return namelist[id];
-  }
-
 }
 
 //Send out login page. (No backend code whatsoever for this.)
@@ -145,6 +87,7 @@ app.get('/files/:file', function(req, res) {
 //Login Module
 var clients = [];
 
+var namelist = [];
 function login(user, pass, sid, key) {
   console.log("User " + user + " is trying to authenticate");
   db.get('users', user)
@@ -154,6 +97,7 @@ function login(user, pass, sid, key) {
         validkeys.push(user + "|" + key);
         console.log("User " + user + " validated with the key " + user + "|" + key);
         clients.push(sid);
+        namelist[user] = res.body.name;
         io.to(sid).emit("authentication", true);
       } else {
         console.log("User " + user + " failed to authenticate");
