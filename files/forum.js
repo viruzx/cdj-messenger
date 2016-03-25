@@ -43,7 +43,7 @@ function loadThread(id){
   socket.emit("loadSingleThread", loadobj);
   $("#openThread a").click();
   $(".openThread").addClass("loading");
-  $(".openThread").attr("id","t" + id));
+  $(".openThread").attr("id","t" + id);
   $("#open-thread").addClass("selected");
   $(".openThread").data("id", id);
 }
