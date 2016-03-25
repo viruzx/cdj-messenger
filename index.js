@@ -278,13 +278,16 @@ io.on('connection', function(socket) {
 
   socket.on("loadSingleThread", function(obj) {
     if (checkkey(obj.user, obj.key)) {
-      db.get('Threads', obj.id)
-        .then(function(res) {
-          res.body.id = obj.id;
-          io.to(socket.id).emit('open thread', res.body);
-        }).fail(function(err) {
-          console.log("Desired thread does not exist!");
+      db.search('Threads', obj.id, {
+          sort: '@path.reftime:desc'
         })
+        .then(function(result) {
+          var items = result.body.results;
+          io.to(socket.id).emit("open thread", items);
+        })
+        .fail(function(err) {
+          console.log(err);
+        });
     }
   })
   socket.on('postThread', function(obj) {

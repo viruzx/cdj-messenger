@@ -53,8 +53,23 @@ function openThread(poster, title, image, content, id) {
   });
   $(".openThread").removeClass("loading");
 }
+function reply(poster, title, image, content, id) {
+  $(".openThread").append('<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + htmlEntities(image) + '"></div> <div class="column small-12 medium-8 end preview-content"> <h2>' + htmlEntities(title) + '</h2> <h4>By: ' + htmlEntities(poster) + '</h4> <p>' + htmlEntities(content) + ' </p> </div> </div>');
+  $(".preview-image").unbind("click");
+  $(".preview-image").click(function() {
+    $(this).toggleClass("medium-3");
+  });
+  $(".openThread").removeClass("loading");
+}
 socket.on('open thread', function(data) {
-  openThread(data.poster, data.title, data.image, data.content, data.id);
+  data.forEach(function(element, index, array){
+    if (element.type="thread"){
+      openThread(element.poster, element.title, element.image, element.content, element.id);
+    } else {
+      reply(element.poster, element.title, element.image, element.content, element.id);
+    }
+  })
+
 });
 socket.on('Thread List', function(data) {
   console.log("Got Thread List!", data);

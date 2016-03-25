@@ -11,8 +11,7 @@ CDJ Messenger is an open-source, portable, flexible and *intended to be* a secur
 ##Dependencies (npm modules)
 
  - express
- - http
- - sync-request
+ - node-imgur
  - orchestrate
  - socket.io
 
@@ -37,3 +36,10 @@ Upon connecting, the first thing the client wants to do is send the username, pa
 From that point on the client no longer needs to send the password but just the username and the key in order to do anything.
 
 SSL is heavily recommended!
+
+#In Development
+
+ - Forum basic functionality
+ - Forum Replies
+ - Messenger redesign
+ - Media Sharing
