@@ -186,7 +186,7 @@ function addMsg(obj) {
 
   $('#messages').append('<li data-time="' + obj.time + '" class="msgtxt u' + obj.user.hashCode() + '"><b>' + obj.name + ":</b> " + htmlEntities(obj.msg) + "</li>");
   $(".msgtxt").unbind("dblclick tap");
-  $(".msgtxt").on("dblclick tap", (function() {
+  $(".msgtxt").on("dblclick tap", function() {
       var msgtime = $(this).data("time");
       d = new Date(msgtime);
       alert(timeSince(d));
