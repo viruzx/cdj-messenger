@@ -199,12 +199,16 @@ io.on('connection', function(socket) {
         });
     }
   });
+  function getTimestamp(){
+    return Date.now();
+  }
   socket.on('chat message', function(obj) {
     if (checkkey(obj.user, obj.key)) {
       if (!(obj.msg == "")) {
         delete obj.key;
         obj.type = "text";
         obj.name = getname(obj.user);
+        obj.time = getTimestamp();
         clients.forEach(function(element, index, array) {
           io.to(element).emit('chat message', obj);
         });
@@ -245,6 +249,7 @@ io.on('connection', function(socket) {
       if (base64regex.test(obj.data)) {
         delete obj.key;
         obj.id = socket.id;
+        obj.time = getTimestamp();
         obj.name = getname(obj.user);
         shareImage(obj);
       } else {

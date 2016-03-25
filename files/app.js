@@ -24,6 +24,26 @@ window.onblur = function() {
 
 
 //Utilities
+//Time since
+function timeSince(timeStamp) {
+    var now = new Date(),
+        secondsPast = (now.getTime() - timeStamp.getTime() ) / 1000;
+    if(secondsPast < 60){
+        return parseInt(secondsPast) + ' seconds ago';
+    }
+    if(secondsPast < 3600){
+        return parseInt(secondsPast/60) + ' minutes ago';
+    }
+    if(secondsPast <= 86400){
+        return parseInt(secondsPast/3600) + 'hours ago';
+    }
+    if(secondsPast > 86400){
+          day = timeStamp.getDate();
+          month = timeStamp.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ","");
+          year = timeStamp.getFullYear() == now.getFullYear() ? "" :  " "+timeStamp.getFullYear();
+          return day + " " + month + year;
+    }
+}
 //Escape html
 function htmlEntities(str) {
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -164,13 +184,19 @@ function addMsg(obj) {
   to prevent undesired styling by users.
   */
 
-  $('#messages').append('<li class="msgtxt u' + obj.user.hashCode() + '"><b>' + obj.name + ":</b> " + htmlEntities(obj.msg) + "</li>");
+  $('#messages').append('<li data-time="' + obj.time + '" class="msgtxt u' + obj.user.hashCode() + '"><b>' + obj.name + ":</b> " + htmlEntities(obj.msg) + "</li>");
+  $(".msgtxt").unbind("click");
+  $(".msgtxt").click(function() {
+    var msgtime = $(this).data("time");
+    d = new Date(msgtime);
+    alert(timeSince(d));
+  });
 }
 
 //Load previous messages
 socket.on('prevmsg', function(data) {
   data.forEach(function(dataset, index, array) {
-    if (dataset.value.type == "img"){
+    if (dataset.value.type == "img") {
       addimg(dataset.value);
     } else {
       addMsg(dataset.value);
@@ -214,7 +240,7 @@ socket.on('chat message', function(obj) {
 });
 
 function addimg(obj) {
-  $('#messages').append($('<li class="msgimg u' + obj.user.hashCode() + '">').html("<b>" + obj.name + ":</b> <img class='image' src='" + obj.data + "'>"));
+  $('#messages').append($('<li data-time="' + obj.time + '" class="msgimg u' + obj.user.hashCode() + '">').html("<b>" + obj.name + ":</b> <img class='image' src='" + obj.data + "'>"));
 }
 socket.on('image', function(obj) {
   addimg(obj);
