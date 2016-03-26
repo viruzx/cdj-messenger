@@ -1,6 +1,6 @@
 #CDJ Messenger
 
-CDJ Messenger is an open-source, portable, flexible and *intended to be* a secure messaging platform based on orchestrate.io's database service.
+CDJ Messenger is an open-source, portable, flexible and *intended to be* a secure messaging platform based on orchestrate.io's database service. Please don't fork this to Github, we don't like github.
 
 ##Objectives
 
@@ -14,6 +14,10 @@ CDJ Messenger is an open-source, portable, flexible and *intended to be* a secur
  - node-imgur
  - orchestrate
  - socket.io
+
+## Pre-requisits
+
+ - Have 3 collections in your orchestrate application (CaSe SeNsItIvE!!): users, messages, Threads
 
 #Installation
 
@@ -38,8 +42,22 @@ From that point on the client no longer needs to send the password but just the 
 SSL is heavily recommended!
 
 #In Development
+ - Sticky Threads
+ - Android app
 
- - Forum basic functionality
- - Forum Replies
- - Messenger redesign
- - Media Sharing
+#Planned
+
+ - Forum Redesign
+ - Media Sharing (via filesharing sites, similar approach as we use imgur to handle all of our image needs. We will need to find however, a free unlimited file sharing service.)
+ - Fetch categories from database instead of hardcode
+ - Desktop notifications
+
+#NOT Planned
+
+ - iOS/Apple app
+ - Private messaging
+
+#In consideration
+
+ - Windows app
+ - Linux app
