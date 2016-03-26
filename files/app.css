@@ -42,7 +42,6 @@ a.fancybox:hover img {
   word-wrap: break-word;
 }
 #messages li p{
-  max-width: 75%;
   background-color: lightblue;
   border-radius: 15px;
   margin-right: 10px;
