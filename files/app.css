@@ -130,7 +130,6 @@ a.fancybox:hover img {
 .main {
   width: 100vw;
   overflow: hidden;
-  position: absolute;
   right: 0;
   left: 0;
   bottom: 0;
@@ -196,4 +195,7 @@ a.fancybox:hover img {
 }
 img[src=""] {
   display: none;
+}
+.tabs-content > .content{
+  padding: 0;
 }

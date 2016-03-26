@@ -113,7 +113,7 @@ function adjust() {
   //Decide on spacing
   var totalh = document.documentElement.clientHeight;
   var inputheight = $(".sending").outerHeight();
-  var alerth = 45 + 57;
+  var alerth = 50 + 57 + $("footer").outerHeight();
   var messageh = $("#messages").height(totalh - inputheight - alerth);
   //Add .you class to owners' messages
   $(".u" + uservar.usr.hashCode()).addClass('you');
