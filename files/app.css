@@ -35,16 +35,29 @@ a.fancybox:hover img {
   height: 3rem;
 }
 #messages li {
-  padding: 5px 10px;
   background-image: url(/files/unknown.png);
   background-repeat: no-repeat;
-  padding-left: 40px;
   background-size: 35px 35px;
   background-position: top left;
   word-wrap: break-word;
 }
-#messages li:nth-child(odd) {
-  background-color: #eee;
+#messages li p{
+  max-width: 75%;
+  background-color: lightblue;
+  border-radius: 15px;
+  margin-right: 10px;
+  margin-left: 40px;
+  display: inline-block;
+  padding: 5px 10px;
+}
+#messages li.you p{
+  background-color: lightgreen;
+}
+#messages li p b{
+  display: block;
+}
+#messages li.you p b{
+  display: none;
 }
 .send {
   width: 100%;
@@ -68,7 +81,7 @@ a.fancybox:hover img {
   border-radius: 2px;
   padding: 30px;
 }
-.upload-space2, .upload-space3{
+.upload-space2{
   height: 50px;
 background: #DADADA;
 font-family: monospace;
@@ -77,13 +90,8 @@ border-radius: 2px;
 padding: 15px;
 width: 75% !important;
 }
-/*
-  For messages that YOU send
-  Rest will be aligned to left
-  by default
-*/
 
-.you {
+#messages li.you{
   text-align: right;
 }
 
@@ -178,10 +186,4 @@ width: 75% !important;
 }
 img[src=""] {
    display: none;
-}
-.replyform{
-  display: none;
-}
-.selected .replyform{
-  display: block;
 }
