@@ -173,10 +173,6 @@ a.fancybox:hover img {
 .download:hover {
   opacity: 1;
 }
-.msgimg b {
-  vertical-align: top;
-  display: block;
-}
 .preview-image {
   text-align: center;
   background-color: #676767;

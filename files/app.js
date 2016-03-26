@@ -241,7 +241,7 @@ function addMsg(obj) {
   });
 
   function addimg(obj) {
-    $('#messages').append($('<li data-time="' + obj.time + '" class="msgimg u' + obj.user.hashCode() + '">').html("<b>" + obj.name + ":</b> <img class='image' src='" + obj.data + "'>"));
+    $('#messages').append($('<li data-time="' + obj.time + '" class="msgimg u' + obj.user.hashCode() + '">').html("<p><b>" + obj.name + ":</b> <img class='image' src='" + obj.data + "'></p>"));
   }
   socket.on('image', function(obj) {
     addimg(obj);
