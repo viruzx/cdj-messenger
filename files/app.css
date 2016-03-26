@@ -40,8 +40,9 @@ a.fancybox:hover img {
   background-size: 35px 35px;
   background-position: top left;
   word-wrap: break-word;
+  word-break: break-all;
 }
-#messages li p{
+#messages li p {
   background-color: #f1f0f0;
   border-radius: 15px;
   margin-right: 10px;
@@ -49,14 +50,14 @@ a.fancybox:hover img {
   display: inline-block;
   padding: 5px 10px;
 }
-#messages li.you p{
+#messages li.you p {
   background-color: rgb(102, 153, 204);
   color: #fff;
 }
-#messages li p b{
+#messages li p b {
   display: block;
 }
-#messages li.you p b{
+#messages li.you p b {
   display: none;
 }
 .send {
@@ -68,6 +69,13 @@ a.fancybox:hover img {
   font-weight: 600;
   font-size: 16px;
   text-align: center;
+}
+.typing {
+  padding: 0;
+  background-color: #FFF;
+  border-color: #fff;
+  color: #c3c3c3;
+  display: inline-block;
 }
 #messages {
   height: 60vh;
@@ -81,23 +89,22 @@ a.fancybox:hover img {
   border-radius: 2px;
   padding: 30px;
 }
-.replyform{
+.replyform {
   display: none;
 }
-.selected .replyform{
+.selected .replyform {
   display: block
 }
-.upload-space2, .upload-space3{
+.upload-space2, .upload-space3 {
   height: 50px;
-background: #DADADA;
-font-family: monospace;
-border: 1px #B9B9B9 solid;
-border-radius: 2px;
-padding: 15px;
-width: 75% !important;
+  background: #DADADA;
+  font-family: monospace;
+  border: 1px #B9B9B9 solid;
+  border-radius: 2px;
+  padding: 15px;
+  width: 75% !important;
 }
-
-#messages li.you{
+#messages li.you {
   text-align: right;
 }
 
@@ -191,5 +198,5 @@ width: 75% !important;
   margin-bottom: 0 !important;
 }
 img[src=""] {
-   display: none;
+  display: none;
 }
