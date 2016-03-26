@@ -80,6 +80,12 @@ a.fancybox:hover img {
   border-radius: 2px;
   padding: 30px;
 }
+.upload-space3{
+  display: none;
+}
+.selected .upload-space3{
+  display: block;
+}
 .upload-space2, .upload-space3{
   height: 50px;
 background: #DADADA;
