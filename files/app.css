@@ -42,7 +42,7 @@ a.fancybox:hover img {
   word-wrap: break-word;
 }
 #messages li p{
-  background-color: lightblue;
+  background-color: #f1f0f0;
   border-radius: 15px;
   margin-right: 10px;
   margin-left: 40px;
@@ -50,7 +50,8 @@ a.fancybox:hover img {
   padding: 5px 10px;
 }
 #messages li.you p{
-  background-color: lightgreen;
+  background-color: rgb(102, 153, 204);
+  color: #fff;
 }
 #messages li p b{
   display: block;
