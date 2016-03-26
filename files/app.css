@@ -196,6 +196,13 @@ a.fancybox:hover img {
 img[src=""] {
   display: none;
 }
-.tabs-content > .content{
+.tabs-content > .content {
   padding: 0;
+}
+.footer {
+  background: rgb(248, 248, 248) none repeat scroll 0% 0%;
+  border: 1px solid rgb(204, 204, 204);
+  padding: 10px;
+  text-align: center;
+  margin-top: 5px;
 }
