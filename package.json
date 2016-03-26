@@ -1,6 +1,6 @@
 {
   "name": "cdj-messenger",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Socket.io chat",
   "dependencies": {
     "express": "~4.10.2",
