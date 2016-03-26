@@ -175,6 +175,7 @@ a.fancybox:hover img {
 }
 .msgimg b {
   vertical-align: top;
+  display: block;
 }
 .preview-image {
   text-align: center;

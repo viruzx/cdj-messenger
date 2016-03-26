@@ -206,6 +206,7 @@ function addMsg(obj) {
     console.log("Downloaded messages");
 
     createlinks();
+    $( ".image").unbind( "click" );
     $(".image").on('click', function(e) {
       showimage($(this).attr('src'));
       $(".download").attr("href", $(".imgcontainer img").attr("src"));
@@ -248,6 +249,7 @@ function addMsg(obj) {
     //Adjust again just to make sure.
     //This function also calls to add relevant classes
     adjust();
+    $( ".image").unbind( "click" );
     $(".image").on('click', function(e) {
       showimage($(this).attr('src'));
     });
