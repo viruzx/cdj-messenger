@@ -201,6 +201,7 @@ function addMsg(obj) {
       } else {
         addMsg(dataset.value);
       }
+      $("body").removeClass("loading");
     });
     adjust();
     console.log("Downloaded messages");

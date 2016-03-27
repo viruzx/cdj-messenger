@@ -191,6 +191,9 @@ a.fancybox:hover img {
   background-repeat: no-repeat;
   height: 75vh;
 }
+.loading * {
+    display: none;
+}
 .tabs-content {
   margin-bottom: 0 !important;
 }
