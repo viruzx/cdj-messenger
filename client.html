@@ -13,180 +13,182 @@
   <link rel="stylesheet" href="/files/icons.css">
 </head>
 
-<body class="loading">
-  <div class="row container">
-    <ul class="tabs" data-tab>
-      <li class="tab-title"><a href="#forum">Forum</a></li>
-      <li class="tab-title active"><a href="#chat">Messenger</a></li>
-    </ul>
-  </div>
-  <div class="tabs-content">
-    <div class="content" id="forum">
-
-      <div class="row container">
-        <ul class="tabs" data-tab>
-          <li class="tab-title active"><a id="browse" href="#listing">Browse</a></li>
-          <li id="newThread" class="tab-title"><a href="#new-thread">New</a></li>
-          <li id="openThread" class="tab-title"><a href="#open-thread">Current</a></li>
-      </div>
+<body>
+  <div class="loading" id="full">
+    <div class="row container">
+      <ul class="tabs" data-tab>
+        <li class="tab-title"><a href="#forum">Forum</a></li>
+        <li class="tab-title active"><a href="#chat">Messenger</a></li>
       </ul>
-      <div class="tabs-content">
-        <div class="content active" id="listing">
-          <div class="row container">
-            <dl class="sub-nav">
-              <dt>Filter:</dt>
-              <dd data-filter="0" class="active no-filter"><a href="#">All</a></dd>
-              <dd data-filter="1"><a href="#">Exams</a></dd>
-              <dd data-filter="2"><a href="#">Devoirs</a></dd>
-              <dd data-filter="3"><a href="#">Musique</a></dd>
-              <dd data-filter="4"><a href="#">Divers</a></dd>
-              <dd data-filter="5"><a href="#">News</a></dd>
-            </dl>
-            <div class="row listing loading"></div>
-
-          </div>
-        </div>
-        <div class="content" id="new-thread">
-
-          <div class="row container">
-            <form>
-              <div class="small-12 medium-6 columns">
-                <div class="row collapse prefix-radius">
-                  <div class="small-3 columns">
-                    <span class="prefix">Title</span>
-                  </div>
-                  <div class="small-9 columns">
-                    <input type="text" class="postTitle"  required>
-                  </div>
-                </div>
-              </div>
-              <div class="small-12 medium-6 columns">
-                <select class="catforum">
-                  <option value="0">Category: Aucun</option>
-                  <option value="1">Exams</option>
-                  <option value="2">Devoirs</option>
-                  <option value="3">Musique</option>
-                  <option value="4">Divers</option>
-                  <option value="5">News</option>
-                </select>
-              </div>
-              <div class="small-12 forumupload" style="text-align: center;">
-                <div class="uimgurl"></div>
-                <input type="file" class="upload-space2" onchange="previewFile2()">
-              </div>
-              <div class="row">
-                <div class="small-12 columns">
-                  <textarea class="postContent" style="height: 200px" placeholder="Message"></textarea>
-                </div>
-              </div>
-
-            </form>
-            <div class="row">
-              <div class="small-12 columns">
-                <center>
-                  <button onclick="doPost();" class="btn expand large">Post</button>
-                </center>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="content" id="open-thread">
-
-          <div class="row container openThread">
-            <h2>Select a thread to view</h2>
-          </div>
-          <div class="row container replyform">
-            <form>
-              <div class="small-12 columns">
-                <div class="row collapse prefix-radius">
-                  <div class="small-3 columns">
-                    <span class="prefix">Title</span>
-                  </div>
-                  <div class="small-9 columns">
-                    <input type="text" class="postTitle2"  required>
-                  </div>
-                </div>
-              </div>
-              <div class="small-12 forumupload3" style="text-align: center;">
-                <div class="uimgurl2"></div>
-                <input type="file" class="upload-space3" onchange="previewFile3()">
-              </div>
-              <div class="row">
-                <div class="small-12 columns">
-                  <textarea class="postContent2" style="height: 200px" placeholder="Message"></textarea>
-                </div>
-              </div>
-
-            </form>
-            <div class="row">
-              <div class="small-12 columns">
-                <center>
-                  <button onclick="doReply();" class="btn expand large">Post</button>
-                </center>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
     </div>
-    <div class="content active chatcontainer" id="chat">
-      <div id="image-modal" class="reveal-modal full-screen" data-reveal aria-hidden="true" role="dialog">
-        <a href="#" class="download" download><i class="fa fa-5x fa-cloud-download"></i></a>
-        <div class="imgcontainer"></div>
-        <a class="close-reveal-modal">&#215;</a>
-      </div>
-      <div id="file-upload" class="reveal-modal" data-reveal aria-hidden="true" role="dialog">
-        <h2>Upload File</h2>
-        <p class="lead">Click to browse files or drag/drop into the space.</p>
-        <input type="file" class="upload-space" onchange="previewFile()">
-        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-      </div>
-      <div class="main container row">
-        <nav class="top-bar" data-options="is_hover: false" data-topbar role="navigation">
-          <ul class="title-area">
-            <li class="name">
-              <h1><a href="#">CDJ Messenger</a></h1>
-            </li>
-            <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-            <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
-          </ul>
+    <div class="tabs-content">
+      <div class="content" id="forum">
 
-          <section class="top-bar-section">
-            <!-- Right Nav Section -->
-            <ul class="right">
-              <li class="has-dropdown">
-                <a href="#">Share</a>
-                <ul class="dropdown">
-                  <li><a href="#" data-reveal-id="file-upload">Image</a></li>
-                </ul>
+        <div class="row container">
+          <ul class="tabs" data-tab>
+            <li class="tab-title active"><a id="browse" href="#listing">Browse</a></li>
+            <li id="newThread" class="tab-title"><a href="#new-thread">New</a></li>
+            <li id="openThread" class="tab-title"><a href="#open-thread">Current</a></li>
+        </div>
+        </ul>
+        <div class="tabs-content">
+          <div class="content active" id="listing">
+            <div class="row container">
+              <dl class="sub-nav">
+                <dt>Filter:</dt>
+                <dd data-filter="0" class="active no-filter"><a href="#">All</a></dd>
+                <dd data-filter="1"><a href="#">Exams</a></dd>
+                <dd data-filter="2"><a href="#">Devoirs</a></dd>
+                <dd data-filter="3"><a href="#">Musique</a></dd>
+                <dd data-filter="4"><a href="#">Divers</a></dd>
+                <dd data-filter="5"><a href="#">News</a></dd>
+              </dl>
+              <div class="row listing loading"></div>
+
+            </div>
+          </div>
+          <div class="content" id="new-thread">
+
+            <div class="row container">
+              <form>
+                <div class="small-12 medium-6 columns">
+                  <div class="row collapse prefix-radius">
+                    <div class="small-3 columns">
+                      <span class="prefix">Title</span>
+                    </div>
+                    <div class="small-9 columns">
+                      <input type="text" class="postTitle" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="small-12 medium-6 columns">
+                  <select class="catforum">
+                    <option value="0">Category: Aucun</option>
+                    <option value="1">Exams</option>
+                    <option value="2">Devoirs</option>
+                    <option value="3">Musique</option>
+                    <option value="4">Divers</option>
+                    <option value="5">News</option>
+                  </select>
+                </div>
+                <div class="small-12 forumupload" style="text-align: center;">
+                  <div class="uimgurl"></div>
+                  <input type="file" class="upload-space2" onchange="previewFile2()">
+                </div>
+                <div class="row">
+                  <div class="small-12 columns">
+                    <textarea class="postContent" style="height: 200px" placeholder="Message"></textarea>
+                  </div>
+                </div>
+
+              </form>
+              <div class="row">
+                <div class="small-12 columns">
+                  <center>
+                    <button onclick="doPost();" class="btn expand large">Post</button>
+                  </center>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="content" id="open-thread">
+
+            <div class="row container openThread">
+              <h2>Select a thread to view</h2>
+            </div>
+            <div class="row container replyform">
+              <form>
+                <div class="small-12 columns">
+                  <div class="row collapse prefix-radius">
+                    <div class="small-3 columns">
+                      <span class="prefix">Title</span>
+                    </div>
+                    <div class="small-9 columns">
+                      <input type="text" class="postTitle2" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="small-12 forumupload3" style="text-align: center;">
+                  <div class="uimgurl2"></div>
+                  <input type="file" class="upload-space3" onchange="previewFile3()">
+                </div>
+                <div class="row">
+                  <div class="small-12 columns">
+                    <textarea class="postContent2" style="height: 200px" placeholder="Message"></textarea>
+                  </div>
+                </div>
+
+              </form>
+              <div class="row">
+                <div class="small-12 columns">
+                  <center>
+                    <button onclick="doReply();" class="btn expand large">Post</button>
+                  </center>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="content active chatcontainer" id="chat">
+        <div id="image-modal" class="reveal-modal full-screen" data-reveal aria-hidden="true" role="dialog">
+          <a href="#" class="download" download><i class="fa fa-5x fa-cloud-download"></i></a>
+          <div class="imgcontainer"></div>
+          <a class="close-reveal-modal">&#215;</a>
+        </div>
+        <div id="file-upload" class="reveal-modal" data-reveal aria-hidden="true" role="dialog">
+          <h2>Upload File</h2>
+          <p class="lead">Click to browse files or drag/drop into the space.</p>
+          <input type="file" class="upload-space" onchange="previewFile()">
+          <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+        </div>
+        <div class="main container row">
+          <nav class="top-bar" data-options="is_hover: false" data-topbar role="navigation">
+            <ul class="title-area">
+              <li class="name">
+                <h1><a href="#">CDJ Messenger</a></h1>
               </li>
-              <li class="has-dropdown">
-                <a href="#">Advanced</a>
-                <ul class="dropdown">
-                  <li><a href="#" onclick="location.reload();">Refresh</a></li>
-                  <li><a href="#" onclick="enable_beep=false;">Mute Notifications</a></li>
-                  <li><a href="#" onclick="enable_beep=true;">Unmute Notifications</a></li>
-                </ul>
-              </li>
-              <li><a href="#" onclick="logout()">Logout</a></li>
+              <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+              <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
             </ul>
 
-          </section>
-        </nav>
-        <ul id="messages"></ul>
-        <form class="sending" action="">
-          <div class="row collapse">
-            <div class="small-9 medium-9 columns">
-              <input type="text" class="small" placeholder="Message" id="m" autocomplete="off" />
-            </div>
-            <div class="small-3 medium-3 columns">
-              <button style="margin-bottom: 0;" class="send button">Send</button>
-            </div>
-          </div>
-        </form>
+            <section class="top-bar-section">
+              <!-- Right Nav Section -->
+              <ul class="right">
+                <li class="has-dropdown">
+                  <a href="#">Share</a>
+                  <ul class="dropdown">
+                    <li><a href="#" data-reveal-id="file-upload">Image</a></li>
+                  </ul>
+                </li>
+                <li class="has-dropdown">
+                  <a href="#">Advanced</a>
+                  <ul class="dropdown">
+                    <li><a href="#" onclick="location.reload();">Refresh</a></li>
+                    <li><a href="#" onclick="enable_beep=false;">Mute Notifications</a></li>
+                    <li><a href="#" onclick="enable_beep=true;">Unmute Notifications</a></li>
+                  </ul>
+                </li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+              </ul>
 
+            </section>
+          </nav>
+          <ul id="messages"></ul>
+          <form class="sending" action="">
+            <div class="row collapse">
+              <div class="small-9 medium-9 columns">
+                <input type="text" class="small" placeholder="Message" id="m" autocomplete="off" />
+              </div>
+              <div class="small-3 medium-3 columns">
+                <button style="margin-bottom: 0;" class="send button">Send</button>
+              </div>
+            </div>
+          </form>
+
+        </div>
       </div>
     </div>
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
