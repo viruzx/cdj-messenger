@@ -20,9 +20,6 @@ window.onblur = function() {
   isActive = false;
 };
 
-
-
-
 //Utilities
 //Time since
 function timeSince(timeStamp) {
@@ -128,20 +125,6 @@ function prevmsg() {
     key: uservar.key
   };
   socket.emit('prevmsg', obj);
-
-  /*
-  Legacy prevmsg
-  $.get("/previous/" + uservar.usr + "/" + uservar.key, function(data) {
-    $("#messages").html(data);
-    adjust();
-    console.log("Downloaded messages");
-
-    createlinks();
-    $(".image").on('click', function(e) {
-      showimage($(this).attr('src'));
-      $(".download").attr("href", $(".imgcontainer img").attr("src"));
-    });
-  });*/
 }
 
 $(window).on('resize', function() {
