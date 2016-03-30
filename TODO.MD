@@ -5,7 +5,9 @@ If this document says something is going to happen, it does **not** mean it will
 #TODO List
 
  - Do not mess with scroll when looking at image
- - Show webapp only after authentication
  - Improve notifications
  - Add desktop notifications
  - Need better version managing app
+ - deal missed messages
+ - Delete/edit posts
+ - Re-write forum posting

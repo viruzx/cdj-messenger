@@ -54,7 +54,11 @@ function openThread(poster, title, image, content, id) {
     $(this).toggleClass("medium-3");
   });
   $(".openThread").removeClass("loading");
-  $("#open-thread .preview-content p").html($("#open-thread .preview-content p").text().replace(/\n/g,"<br>"));
+  $("#open-thread .preview-content p").each(function() {
+    $(this).html(function(index, text) {
+        return text.replace(/\n/g,"<br>");
+    });
+});
 }
 function reply(poster, title, image, content, id) {
   $(".openThread").append('<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + htmlEntities(image) + '"></div> <div class="column small-12 medium-8 end preview-content"> <h2>' + htmlEntities(title) + '</h2> <h4>By: ' + htmlEntities(poster) + '</h4> <p>' + htmlEntities(content) + ' </p> </div> </div><hr>');
@@ -63,6 +67,12 @@ function reply(poster, title, image, content, id) {
     $(this).toggleClass("medium-3");
   });
   $(".openThread").removeClass("loading");
+
+  $("#open-thread .preview-content p").each(function() {
+    $(this).html(function(index, text) {
+        return text.replace(/\n/g,"<br>");
+    });
+});
 }
 socket.on('open thread', function(data) {
   console.log("Thread Opened", data);
@@ -149,6 +159,12 @@ function doPost() {
 //Post reply
 function removepostimg2(){
     $(".forumupload3").html('<div class="uimgurl"></div><input type="file" class="upload-space3" onchange="previewFile3()">');
+
+    $("#open-thread .preview-content p").each(function() {
+      $(this).html(function(index, text) {
+          return text.replace(/\n/g,"<br>");
+      });
+  });
 }
 socket.on('postimg', function(data) {
   $(".forumupload3").html("<h2>Image Uploaded!</h2><br><h3 class='uimgurl2'>" + data + "</h3><h3><a onclick='removepostimg2()'>[Remove]</a></h3>");
@@ -159,6 +175,12 @@ socket.on('new reply', function(data) {
   $(".preview-image").click(function() {
     $(this).toggleClass("medium-3");
   });
+
+  $("#open-thread .preview-content p").each(function() {
+    $(this).html(function(index, text) {
+        return text.replace(/\n/g,"<br>");
+    });
+});
 });
 function previewFile3() {
   $(".forumupload3").append("<img src='/files/loader.gif'>");
