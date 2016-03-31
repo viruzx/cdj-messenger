@@ -107,7 +107,9 @@ a.fancybox:hover img {
 #messages li.you {
   text-align: right;
 }
-
+.msgimg .image {
+    max-width: 75vw;
+}
 /*.top-bar {
   position: fixed;
   right: 0;
