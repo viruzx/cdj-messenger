@@ -1,3 +1,6 @@
+.row {
+    overflow-x: hidden;
+}
 .chatcontainer {
   height: 100%;
 }
@@ -40,7 +43,6 @@ a.fancybox:hover img {
   background-size: 35px 35px;
   background-position: top left;
   word-wrap: break-word;
-  word-break: break-all;
 }
 #messages li p {
   background-color: #f1f0f0;
