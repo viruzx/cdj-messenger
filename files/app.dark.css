@@ -77,11 +77,11 @@ a.fancybox:hover img {
   text-align: center;
 }
 .typing {
-  padding: 0;
-  background-color: #FFF;
-  border-color: #fff;
-  color: #c3c3c3;
-  display: inline-block;
+    padding: 0;
+    background-color: #000;
+    color: #c3c3c3;
+    display: inline-block;
+    border: none;
 }
 #messages {
   height: 60vh;
