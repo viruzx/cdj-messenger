@@ -209,3 +209,15 @@ a.fancybox:hover img {
 img[src=""] {
   display: none;
 }
+
+    .login-box {
+    background: #000;
+    border: 1px solid #3b3b3b;
+    margin: 100px 0;
+    padding: 40px 20px 0 20px;
+}
+
+    .login-container {
+      width: 100%;
+      max-width: 350px;
+    }
