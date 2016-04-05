@@ -32,6 +32,9 @@ a.fancybox:hover img {
   margin: 0;
   padding: 0;
 }
+.you a {
+    color: #0027ff;
+}
 #m {
   width: 100%;
   margin-bottom: 0;
