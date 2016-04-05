@@ -46,6 +46,7 @@ a.fancybox:hover img {
   background-size: 35px 35px;
   background-position: top left;
   word-wrap: break-word;
+  overflow: hidden;
 }
 #messages li p {
   background-color: #474747;
