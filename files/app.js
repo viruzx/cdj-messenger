@@ -170,163 +170,182 @@ function addMsg(obj) {
   $('#messages').append('<li data-time="' + obj.time + '" class="msgtxt u' + obj.user.hashCode() + '"><p><b>' + obj.name + ":</b> " + htmlEntities(obj.msg) + "</p></li>");
   $(".msgtxt").unbind("doubletap");
   $(".msgtxt").on("doubletap", function() {
-      var msgtime = $(this).data("time");
-      d = new Date(msgtime);
-      alert(timeSince(d));
-    });
-  }
-
-  //Load previous messages
-  socket.on('prevmsg', function(data) {
-    data.forEach(function(dataset, index, array) {
-      if (dataset.value.type == "img") {
-        addimg(dataset.value);
-      } else {
-        addMsg(dataset.value);
-      }
-      $("#full").removeClass("loading");
-    });
-    adjust();
-    console.log("Downloaded messages");
-
-    createlinks();
-    $( ".image").unbind( "click" );
-    $(".image").on('click', function(e) {
-      showimage($(this).attr('src'));
-      $(".download").attr("href", $(".imgcontainer img").attr("src"));
-    });
-
+    var msgtime = $(this).data("time");
+    d = new Date(msgtime);
+    alert(timeSince(d));
   });
+}
 
-  socket.on('chat message', function(obj) {
-    addMsg(obj);
-
-    if (!isActive) {
-      if (enable_beep) {
-        play_beep();
-      }
-
-    }
-    //Adjust again just to make sure.
-    //This function also calls to add relevant classes
-    if (obj.msg.indexOf("http") > -1) {
-      createlinks();
-    }
-    adjust();
-    //Make the tab titlebar flash with "New message!" to attract attention
-    $.titleAlert("New Message!", {
-      //These are here to avoid doing it on focus.
-      requireBlur: true,
-      stopOnFocus: true,
-      //Adjustable values
-      duration: 0,
-      interval: 700
-    });
-  });
-
-  function addimg(obj) {
-    $('#messages').append($('<li data-time="' + obj.time + '" class="msgimg u' + obj.user.hashCode() + '">').html("<p><b>" + obj.name + ":</b> <img class='image' src='" + obj.data + "'></p>"));
-  }
-  socket.on('image', function(obj) {
-    addimg(obj);
-
-    //Adjust again just to make sure.
-    //This function also calls to add relevant classes
-    adjust();
-    $( ".image").unbind( "click" );
-    $(".image").on('click', function(e) {
-      showimage($(this).attr('src'));
-    });
-    //Make the tab titlebar flash with "New message!" to attract attention
-    $.titleAlert("New Message!", {
-      //These are here to avoid doing it on focus.
-      requireBlur: true,
-      stopOnFocus: true,
-      //Adjustable values
-      duration: 0,
-      interval: 700
-    });
-
-
-  });
-  //Alerts are called from terminal command line. They open up dialog boxes.
-  socket.on('alert', function(notif) {
-    var modid = makeid();
-    $('body').prepend('<div id="' + modid +
-      '" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">  <h2 id="modalTitle">Broadcast</h2>  <p class="lead">The system has sent out this broadcast: </p>  <p> ' + notif +
-      '</p>  <a class="close-reveal-modal" aria-label="Close">&#215;</a></div>');
-    $("#" + modid).foundation('reveal', 'open');
-    adjust();
-    //Notify about broadcast
-    //TODO: Add notification sound and desktop popup
-    $.titleAlert("Broadcast from system!", {
-      requireBlur: true,
-      stopOnFocus: true,
-      duration: 0,
-      interval: 700
-    });
-  });
-
-  //Notify about error
-  socket.on('error', function(notif) {
-    var modid = makeid();
-    $('body').prepend('<div id="' + modid +
-      '" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">  <h2 id="modalTitle">Error!</h2>  <p class="lead">The system sent you this message: </p>  <p> ' + notif +
-      '</p>  <a class="close-reveal-modal" aria-label="Close">&#215;</a></div>');
-    $("#" + modid).foundation('reveal', 'open');
-    adjust();
-    //Notify about broadcast
-    //TODO: Add notification sound and desktop popup
-    $.titleAlert("Broadcast from system!", {
-      requireBlur: true,
-      stopOnFocus: true,
-      duration: 0,
-      interval: 700
-    });
-  });
-  //Authentication handling
-  socket.on('authentication', function(isAuth) {
-    if (isAuth) {
-      console.log("Authenticated");
-      //Load previous messages
-      authenticated = true;
-      prevmsg();
+//Load previous messages
+socket.on('prevmsg', function(data) {
+  data.forEach(function(dataset, index, array) {
+    if (dataset.value.type == "img") {
+      addimg(dataset.value);
     } else {
-      console.log("Failed to authenticate");
-      var modid = makeid();
-      $('body').prepend('<div id="' + modid +
-        '" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">  <h2 id="modalTitle">Error 401</h2>  <p class="lead">Authorization error </p>  <p> Failed to authenticate with server via handshake. </p>  <a class="close-reveal-modal" aria-label="Close">&#215;</a></div>'
-      );
-      $("#" + modid).foundation('reveal', 'open');
-      setTimeout(function() {
-        logout();
-      }, 3000);
+      addMsg(dataset.value);
     }
+    $("#full").removeClass("loading");
   });
-  socket.on('disconnect', function() {
+  adjust();
+  console.log("Downloaded messages");
+
+  createlinks();
+  $(".image").unbind("click");
+  $(".image").on('click', function(e) {
+    showimage($(this).attr('src'));
+    $(".download").attr("href", $(".imgcontainer img").attr("src"));
+  });
+
+});
+
+socket.on('chat message', function(obj) {
+  addMsg(obj);
+
+  if (!isActive) {
+    if (enable_beep) {
+      play_beep();
+    }
+
+  }
+  //Adjust again just to make sure.
+  //This function also calls to add relevant classes
+  if (obj.msg.indexOf("http") > -1) {
+    createlinks();
+  }
+  adjust();
+  //Make the tab titlebar flash with "New message!" to attract attention
+  $.titleAlert("New Message!", {
+    //These are here to avoid doing it on focus.
+    requireBlur: true,
+    stopOnFocus: true,
+    //Adjustable values
+    duration: 0,
+    interval: 700
+  });
+});
+
+function addimg(obj) {
+  $('#messages').append($('<li data-time="' + obj.time + '" class="msgimg u' + obj.user.hashCode() + '">').html("<p><b>" + obj.name + ":</b> <img class='image' src='" + obj.data + "'></p>"));
+}
+socket.on('image', function(obj) {
+  addimg(obj);
+
+  //Adjust again just to make sure.
+  //This function also calls to add relevant classes
+  adjust();
+  $(".image").unbind("click");
+  $(".image").on('click', function(e) {
+    showimage($(this).attr('src'));
+  });
+  //Make the tab titlebar flash with "New message!" to attract attention
+  $.titleAlert("New Message!", {
+    //These are here to avoid doing it on focus.
+    requireBlur: true,
+    stopOnFocus: true,
+    //Adjustable values
+    duration: 0,
+    interval: 700
+  });
+
+
+});
+//Alerts are called from terminal command line. They open up dialog boxes.
+socket.on('alert', function(notif) {
+  var modid = makeid();
+  $('body').prepend('<div id="' + modid +
+    '" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">  <h2 id="modalTitle">Broadcast</h2>  <p class="lead">The system has sent out this broadcast: </p>  <p> ' + notif +
+    '</p>  <a class="close-reveal-modal" aria-label="Close">&#215;</a></div>');
+  $("#" + modid).foundation('reveal', 'open');
+  adjust();
+  //Notify about broadcast
+  //TODO: Add notification sound and desktop popup
+  $.titleAlert("Broadcast from system!", {
+    requireBlur: true,
+    stopOnFocus: true,
+    duration: 0,
+    interval: 700
+  });
+});
+
+//Notify about error
+socket.on('error', function(notif) {
+  var modid = makeid();
+  $('body').prepend('<div id="' + modid +
+    '" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">  <h2 id="modalTitle">Error!</h2>  <p class="lead">The system sent you this message: </p>  <p> ' + notif +
+    '</p>  <a class="close-reveal-modal" aria-label="Close">&#215;</a></div>');
+  $("#" + modid).foundation('reveal', 'open');
+  adjust();
+  //Notify about broadcast
+  //TODO: Add notification sound and desktop popup
+  $.titleAlert("Broadcast from system!", {
+    requireBlur: true,
+    stopOnFocus: true,
+    duration: 0,
+    interval: 700
+  });
+});
+//Authentication handling
+socket.on('authentication', function(isAuth) {
+  if (isAuth) {
+    console.log("Authenticated");
+    //Load previous messages
+    authenticated = true;
+    prevmsg();
+  } else {
+    console.log("Failed to authenticate");
     var modid = makeid();
     $('body').prepend('<div id="' + modid +
-      '" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">  <h2 id="modalTitle">Network Failure</h2>  <p class="lead">Connection to server has been lost </p>  <p> Whoops! It seems like the connection to the server was lost. <a href="#" onclick="location.reload()">Try refreshing. </a></p>  <a class="close-reveal-modal" aria-label="Close">&#215;</a></div>'
+      '" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">  <h2 id="modalTitle">Error 401</h2>  <p class="lead">Authorization error </p>  <p> Failed to authenticate with server via handshake. </p>  <a class="close-reveal-modal" aria-label="Close">&#215;</a></div>'
     );
     $("#" + modid).foundation('reveal', 'open');
-  });
-
-  function auth(keys) {
-    //Send the keys to the server for validation
-    socket.emit('auth', keys);
+    setTimeout(function() {
+      logout();
+    }, 3000);
   }
+});
+socket.on('disconnect', function() {
+  var modid = makeid();
+  $('body').prepend('<div id="' + modid +
+    '" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">  <h2 id="modalTitle">Network Failure</h2>  <p class="lead">Connection to server has been lost </p>  <p> Whoops! It seems like the connection to the server was lost. <a href="#" onclick="location.reload()">Try refreshing. </a></p>  <a class="close-reveal-modal" aria-label="Close">&#215;</a></div>'
+  );
+  $("#" + modid).foundation('reveal', 'open');
+});
 
-  function logout() {
-    localStorage.username = "";
-    localStorage.pass = "";
-    location.reload();
+function auth(keys) {
+  //Send the keys to the server for validation
+  socket.emit('auth', keys);
+}
+
+function logout() {
+  localStorage.username = "";
+  localStorage.pass = "";
+  location.reload();
+}
+//Typing plugin
+var typing = false;
+var timeout = undefined;
+
+function timeoutFunction() {
+  typing = false;
+
+  var typevar = {
+    username: uservar.usr,
+    key: uservar.key,
+    state: typing
+  };
+  if (authenticated) {
+    socket.emit("typingMessage", typevar);
+
   }
-  //Typing plugin
-  var typing = false;
-  var timeout = undefined;
+}
 
-  function timeoutFunction() {
-    typing = false;
+$("#m").keydown(function(e) {
+  if (e.keyCode == 13) {
+    timeoutFunction()
+    return true;
+  }
+  if (typing == false) {
+    typing = true
 
     var typevar = {
       username: uservar.usr,
@@ -335,158 +354,157 @@ function addMsg(obj) {
     };
     if (authenticated) {
       socket.emit("typingMessage", typevar);
-
     }
+    timeout = setTimeout(timeoutFunction, 1000);
+  } else {
+    clearTimeout(timeout);
+    timeout = setTimeout(timeoutFunction, 1000);
   }
 
-  $("#m").keydown(function(e) {
-    if (e.keyCode == 13) {
-      timeoutFunction()
-      return true;
-    }
-    if (typing == false) {
-      typing = true
+});
 
-      var typevar = {
-        username: uservar.usr,
-        key: uservar.key,
-        state: typing
-      };
-      if (authenticated) {
-        socket.emit("typingMessage", typevar);
-      }
-      timeout = setTimeout(timeoutFunction, 1000);
-    } else {
-      clearTimeout(timeout);
-      timeout = setTimeout(timeoutFunction, 1000);
-    }
+function showtyping(data) {
+  var html = '<div data-alert="" class="alert-box typing a' + data.username.hashCode() + '"> ' + data.name + ' is typing...</div>';
+  if (!($(".a" + data.username.hashCode())[0]) && uservar.usr != data) {
+    $(".sending").prepend(html);
+  }
+  adjust();
+}
 
-  });
+function hidetyping(data) {
+  if ($(".a" + data.username.hashCode())[0]) {
+    $(".a" + data.username.hashCode()).remove();
+  }
+  adjust();
+}
+socket.on('typing', function(data) {
+  isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
 
-  function showtyping(data) {
-    var html = '<div data-alert="" class="alert-box typing a' + data.username.hashCode() + '"> ' + data.name + ' is typing...</div>';
-    if (!($(".a" + data.username.hashCode())[0]) && uservar.usr != data) {
-      $(".sending").prepend(html);
-    }
-    adjust();
+  if (data.username != uservar.usr) {
+    showtyping(data);
+  }
+  if (isScrolledToBottom) {
+    out.scrollTop = out.scrollHeight - out.clientHeight;
   }
 
-  function hidetyping(data) {
-    if ($(".a" + data.username.hashCode())[0]) {
-      $(".a" + data.username.hashCode()).remove();
-    }
-    adjust();
-  }
-  socket.on('typing', function(data) {
-    isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+  adjust();
 
-    if (data.username != uservar.usr) {
-      showtyping(data);
-    }
+});
+socket.on('stoptyping', function(data) {
+  hidetyping(data);
+  adjust();
+});
+
+function previewFile() {
+  var file = document.querySelector('.upload-space').files[0];
+  var reader = new FileReader();
+
+  reader.addEventListener("load", function() {
+    var imageobj = {
+      user: uservar.usr,
+      key: uservar.key,
+      data: reader.result
+    };
+
+    socket.emit("image", imageobj);
+    $('#file-upload').foundation('reveal', 'close');
+  }, false);
+
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+}
+
+$("#messages").bind("DOMSubtreeModified", function() {
+  if (isScrolledToBottom) {
+    out.scrollTop = out.scrollHeight - out.clientHeight;
+  }
+  isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+  $("img").load(function() {
     if (isScrolledToBottom) {
       out.scrollTop = out.scrollHeight - out.clientHeight;
     }
-
-    adjust();
-
+    isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
   });
-  socket.on('stoptyping', function(data) {
-    hidetyping(data);
-    adjust();
-  });
+});
+$("#messages").scroll(function() {
+  isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+});
+new ResizeSensor(jQuery('#m'), function() {
+  if (isScrolledToBottom) {
+    out.scrollTop = out.scrollHeight - out.clientHeight;
+  }
+  isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+});
+$('#m').bind('resize', function() {
+  if (isScrolledToBottom) {
+    out.scrollTop = out.scrollHeight - out.clientHeight;
+  }
+  isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+});
+$(window).load(function() {
+  out.scrollTop = out.scrollHeight - out.clientHeight;
+});
+$(window).resize(function() {
+  isScrolledToBottom = true;
+  out.scrollTop = out.scrollHeight - out.clientHeight;
+});
 
-  function previewFile() {
-    var file = document.querySelector('.upload-space').files[0];
+
+//PAste Image Module
+document.getElementById('m').onpaste = function(event) {
+  // use event.originalEvent.clipboard for newer chrome versions
+  var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+  console.log(JSON.stringify(items)); // will give you the mime types
+  // find pasted image among pasted items
+  var blob = null;
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].type.indexOf("image") === 0) {
+      blob = items[i].getAsFile();
+    }
+  }
+  // load image if there is a pasted image
+  if (blob !== null) {
     var reader = new FileReader();
-
-    reader.addEventListener("load", function() {
+    reader.onload = function(event) {
+      console.log(event.target.result); // data url!
       var imageobj = {
         user: uservar.usr,
         key: uservar.key,
-        data: reader.result
+        data: event.target.result
       };
 
       socket.emit("image", imageobj);
-      $('#file-upload').foundation('reveal', 'close');
-    }, false);
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
+    };
+    reader.readAsDataURL(blob);
   }
+}
 
-  $("#messages").bind("DOMSubtreeModified", function() {
-    if (isScrolledToBottom) {
-      out.scrollTop = out.scrollHeight - out.clientHeight;
-    }
-    isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
-    $("img").load(function() {
-      if (isScrolledToBottom) {
-        out.scrollTop = out.scrollHeight - out.clientHeight;
-      }
-      isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
-    });
-  });
-  $("#messages").scroll(function() {
-    isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
-  });
-  new ResizeSensor(jQuery('#m'), function() {
-    if (isScrolledToBottom) {
-      out.scrollTop = out.scrollHeight - out.clientHeight;
-    }
-    isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
-  });
-  $('#m').bind('resize', function() {
-    if (isScrolledToBottom) {
-      out.scrollTop = out.scrollHeight - out.clientHeight;
-    }
-    isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
-  });
-  $(window).load(function() {
-    out.scrollTop = out.scrollHeight - out.clientHeight;
-  });
-  $(window).resize(function() {
-    isScrolledToBottom = true;
-    out.scrollTop = out.scrollHeight - out.clientHeight;
-  });
+function whitemode() {
+  $("#app-css").attr("href", "/files/app.white.css");
+  $("#foundation-css").attr("href", "/files/foundation.white.css");
+  localStorage.setItem("theme", "white");
+}
 
+function blackmode() {
+  $("#app-css").attr("href", "/files/app.dark.css");
+  $("#foundation-css").attr("href", "/files/foundation.dark.css");
+  localStorage.setItem("theme", "dark");
+}
+window.onload=function(){
 
-  //PAste Image Module
-  document.getElementById('m').onpaste = function(event) {
-    // use event.originalEvent.clipboard for newer chrome versions
-    var items = (event.clipboardData || event.originalEvent.clipboardData).items;
-    console.log(JSON.stringify(items)); // will give you the mime types
-    // find pasted image among pasted items
-    var blob = null;
-    for (var i = 0; i < items.length; i++) {
-      if (items[i].type.indexOf("image") === 0) {
-        blob = items[i].getAsFile();
-      }
+    if (localStorage.getItem("theme") == "white" ){
+      whitemode();
     }
-    // load image if there is a pasted image
-    if (blob !== null) {
-      var reader = new FileReader();
-      reader.onload = function(event) {
-        console.log(event.target.result); // data url!
-        var imageobj = {
-          user: uservar.usr,
-          key: uservar.key,
-          data: event.target.result
-        };
+};
+//Make everything functional
+$(document).ready(function() {
 
-        socket.emit("image", imageobj);
-      };
-      reader.readAsDataURL(blob);
-    }
-  }
-
-  //Make everything functional
-  $(document).ready(function() {
-    //First of all we NEED to authenticate or things will be breaking :/
-    //Pass the user object as the key
-    auth(uservar);
-    //Init foundation (For dialogs, alerts, UI, etc..)
-    $(document).foundation();
-    //Focus on message input for convinience
-    $('#m').focus()
-  });
+  //First of all we NEED to authenticate or things will be breaking :/
+  //Pass the user object as the key
+  auth(uservar);
+  //Init foundation (For dialogs, alerts, UI, etc..)
+  $(document).foundation();
+  //Focus on message input for convinience
+  $('#m').focus()
+});
