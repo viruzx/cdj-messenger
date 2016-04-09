@@ -38,6 +38,7 @@ socket.on('new thread', function(data) {
   newThread(data.poster, data.title, data.image, data.content, data.id);
 });
 function loadThread(id){
+  $("#forumtablink").click();
   var loadobj = forumaccess;
   loadobj.id = id;
   socket.emit("loadSingleThread", loadobj);

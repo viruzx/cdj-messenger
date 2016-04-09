@@ -57,6 +57,17 @@ function createlinks() {
         // Echo link
         $(this).html(replaced_text);
     });
+    $('.msgtxt').each(function() {
+        // Get the content
+        var str = $(this).html();
+        // Set the regex string
+        var regex = /(thread:\/\/([-\w\.]+)+(:\d+)?(\/([\w\/_\-\/%\@\.]*(\?\S+)?)?)?)/ig
+            // Replace plain text links by hyperlinks
+            var threadid = str.replace("thread://", "");
+        var replaced_text = str.replace(regex, "<a onclick=\"loadThread('" + threadid + "')\" target='_blank'>$1</a>");
+        // Echo link
+        $(this).html(replaced_text);
+    });
 }
 //Play a beep
 var snd = new Audio("/files/beep.wav");
