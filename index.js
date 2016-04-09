@@ -99,6 +99,7 @@ function login(user, pass, sid, key) {
         clients.push(sid);
         namelist[user] = res.body.name;
         io.to(sid).emit("authentication", true);
+        io.emit("new user", res.body.name);
       } else {
         console.log("User " + user + " failed to authenticate");
         io.to(sid).emit("authentication", false);
@@ -156,7 +157,9 @@ io.on('connection', function(socket) {
         clients.forEach(function(element, index, array) {
           io.to(element).emit('chat message', obj);
         });
-        db.post('messages', obj);
+        if (obj.store == true){
+          db.post('messages', obj);
+        }
       }
     } else {
       //Notify about issues concerning authenication
@@ -309,7 +312,6 @@ io.on('connection', function(socket) {
       if (!(obj.post.image == "" && obj.post.title == "" && obj.post.content == "")) {
         delete obj.key;
         obj.post.poster = getname(obj.user);
-        delete obj.user;
         db.post('Threads', obj.post)
           .then(function(data) {
             console.log(data.path.key);
@@ -329,10 +331,9 @@ io.on('connection', function(socket) {
 
   socket.on('postThread', function(obj) {
     if (checkkey(obj.user, obj.key)) {
-      if (!(obj.post.image == "" && obj.post.title == "" && obj.post.content == "")) {
+      if (!(obj.post.title == "")) {
         delete obj.key;
         obj.post.poster = getname(obj.user);
-        delete obj.user;
         db.post('Threads', obj.post)
           .then(function(data) {
             console.log(data.path.key);

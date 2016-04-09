@@ -139,6 +139,7 @@ $('form').submit(function() {
     var obj = {
       user: uservar.usr,
       msg: $('#m').val(),
+      store: true,
       key: uservar.key
     };
     socket.emit('chat message', obj);
@@ -311,7 +312,9 @@ socket.on('disconnect', function() {
   );
   $("#" + modid).foundation('reveal', 'open');
 });
-
+socket.on('connect', function() {
+  console.log("An anonymous client has connected");
+});
 function auth(keys) {
   //Send the keys to the server for validation
   socket.emit('auth', keys);

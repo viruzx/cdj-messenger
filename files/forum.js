@@ -20,14 +20,14 @@ $('#chat').on('toggled', function(event, tab) {
 
 
 function listThread(poster, title, image, content, id) {
-  $(".listing").append('<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + htmlEntities(image) + '"></div> <div class="column small-12 medium-8 end preview-content"> <h2>' + htmlEntities(title) + '</h2> <h4>By: ' + htmlEntities(poster) + '</h4> <p>' + htmlEntities(content.substring(0,50)) + '... </p> <ul class="button-group"> <li><a href="#" onclick="loadThread(\'' + id + '\')" class="button small">Full View</a></li></ul> </div> </div><hr>');
+  $(".listing").append('<div class="row singleThread thread-' + id + '"> <div class="column small-12 medium-3 preview-image"><img src="' + htmlEntities(image) + '"></div> <div class="column small-12 medium-8 end preview-content"> <h2>' + htmlEntities(title) + '</h2> <h4>By: ' + htmlEntities(poster) + '</h4> <p>' + htmlEntities(content.substring(0,50)) + '... </p> <ul class="button-group"> <li><a href="#" onclick="loadThread(\'' + id + '\')" class="button small">Full View</a></li></ul> </div> </div><hr>');
   $(".preview-image").unbind("click");
   $(".preview-image").click(function() {
     $(this).toggleClass("medium-3");
   });
 }
 function newThread(poster, title, image, content, id) {
-  $(".listing").prepend('<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + htmlEntities(image) + '"></div> <div class="column small-12 medium-8 end preview-content"> <h2>' + htmlEntities(title) + '</h2> <h4>By: ' + htmlEntities(poster) + '</h4> <p>' + htmlEntities(content.substring(0,50)) + '... </p> <ul class="button-group"> <li><a href="#" onclick="loadThread(\'' + id + '\')" class="button small">Full View</a></li></ul> </div> </div><hr>');
+  $(".listing").prepend('<div class="row singleThread thread-' + id + '"> <div class="column small-12 medium-3 preview-image"><img src="' + htmlEntities(image) + '"></div> <div class="column small-12 medium-8 end preview-content"> <h2>' + htmlEntities(title) + '</h2> <h4>By: ' + htmlEntities(poster) + '</h4> <p>' + htmlEntities(content.substring(0,50)) + '... </p> <ul class="button-group"> <li><a href="#" onclick="loadThread(\'' + id + '\')" class="button small">Full View</a></li></ul> </div> </div><hr>');
   $(".preview-image").unbind("click");
   $(".preview-image").click(function() {
     $(this).toggleClass("medium-3");
@@ -146,13 +146,13 @@ function doPost() {
       "type": "thread"
     }
   }
-  if (!(postObj.post.image == "" && postObj.post.title == "" && postObj.post.content == "")) {
+  if (!(postObj.post.title == "")) {
     socket.emit("postThread", postObj);
     $('form').trigger('reset');
     removepostimg2()
     $("#browse").click();
   } else {
-    alert("Post is empty!");
+    alert("Title is missing!");
   }
 
 }
