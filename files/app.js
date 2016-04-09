@@ -222,7 +222,7 @@ socket.on('chat message', function(obj) {
     }
     //Adjust again just to make sure.
     //This function also calls to add relevant classes
-    if (obj.msg.indexOf("http") > -1) {
+    if (obj.msg.indexOf("http") > -1 || obj.msg.indexOf("thread") > -1) {
         createlinks();
     }
     adjust();
