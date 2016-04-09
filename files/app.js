@@ -47,7 +47,7 @@ function htmlEntities(str) {
 }
 //Create links
 function createlinks() {
-    $('.msgtxt').not(':has(a)').each(function() {
+    $('.msgtxt p').not(':has(a)').each(function() {
         // Get the content
         var str = $(this).html();
         // Set the regex string
@@ -57,14 +57,14 @@ function createlinks() {
         // Echo link
         $(this).html(replaced_text);
     });
-    $('.msgtxt').not(':has(a)').each(function() {
+    $('.msgtxt p').not(':has(a)').each(function() {
         // Get the content
         var str = $(this).html();
         // Set the regex string
         var regex = /(thread:\/\/([-\w\.]+)+(:\d+)?(\/([\w\/_\-\/%\@\.]*(\?\S+)?)?)?)/ig
             // Replace plain text links by hyperlinks
-            var threadid = str.replace("thread://", "");
-            threadid = str.replace(/<b>[\s\S]*?<\/b>/, "");
+            //Filter crap out
+        var threadid = str.replace("thread://", "").replace(/<b>[\s\S]*?<\/b>/, "").replace(" ", "");
         var replaced_text = str.replace(regex, "<a onclick=\"loadThread('" + threadid + "')\" target='_blank'>$1</a>");
         // Echo link
         $(this).html(replaced_text);
