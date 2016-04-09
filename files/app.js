@@ -47,7 +47,7 @@ function htmlEntities(str) {
 }
 //Create links
 function createlinks() {
-    $('.msgtxt').each(function() {
+    $('.msgtxt').not(':has(a)').each(function() {
         // Get the content
         var str = $(this).html();
         // Set the regex string
@@ -57,7 +57,7 @@ function createlinks() {
         // Echo link
         $(this).html(replaced_text);
     });
-    $('.msgtxt').each(function() {
+    $('.msgtxt').not(':has(a)').each(function() {
         // Get the content
         var str = $(this).html();
         // Set the regex string
