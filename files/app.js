@@ -64,7 +64,9 @@ function createlinks() {
         var regex = /(thread:\/\/([-\w\.]+)+(:\d+)?(\/([\w\/_\-\/%\@\.]*(\?\S+)?)?)?)/ig
             // Replace plain text links by hyperlinks
             //Filter crap out
-        var threadid = str.replace("thread://", "").replace(/<b>[\s\S]*?<\/b>/, "").replace(" ", "");
+        var threadidw = str.replace("thread://", "").replace(/<b>[\s\S]*?<\/b>/, "").replace(" ", "");
+        var n = threadidw.split(" ");
+        var threadid = n[n.length - 1];
         var replaced_text = str.replace(regex, "<a onclick=\"loadThread('" + threadid + "')\" target='_blank'>$1</a>");
         // Echo link
         $(this).html(replaced_text);
