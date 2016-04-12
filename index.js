@@ -124,6 +124,9 @@ function connect(socketid, username) {
 
 function disconnect(socketid) {
     var username = connectedClients[socketid];
+    if (username == undefined){
+      return 0;
+    }
     clients.forEach(function(element, index, array) {
         io.to(element).emit("user left", getname(username));
     });
