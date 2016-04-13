@@ -127,15 +127,15 @@ function countClients(user) {
 }
 
 function connect(socketid, username) {
+if (countClients(username) == 0) {
+    clients.forEach(function(element, index, array) {
+        io.to(element).emit("new user", getname(username));
+    });
+    console.log("New user: " + username);
+}
     clients.push(socketid);
     connectedClients[socketid] = username;
     console.log(countClients(username));
-    if (countClients(username) == 6) {
-        clients.forEach(function(element, index, array) {
-            io.to(element).emit("new user", getname(username));
-        });
-        console.log("New user: " + username);
-    }
 }
 
 function disconnect(socketid) {
@@ -143,13 +143,13 @@ function disconnect(socketid) {
     if (username == undefined) {
         return 0;
     }
-    if (countClients(username) == 6) {
+    delete connectedClients[socketid];
+    if (countClients(username) == 0) {
         clients.forEach(function(element, index, array) {
             io.to(element).emit("user left", getname(username));
         });
         console.log("User left: " + username);
     }
-    delete connectedClients[socketid];
 }
 
 
