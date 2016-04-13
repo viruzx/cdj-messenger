@@ -59,23 +59,6 @@ function checkkey(user, key) {
     }
     return (validkeys.indexOf(check) > -1);
 }
-/* Legacy prevmsg
-Load previous messages (Requires a valid key)
-app.get('/previous/:user/:key', function(req, res) {
-  var key = req.params.key;
-  var user = req.params.user;
-  if (checkkey(user, key)) {
-    res.sendFile(__dirname + '/message.html');
-  } else {
-    res.status(401).send('Invalid key. Either authentication failed or you are doing something you should not be...');
-    console.log("Attemped to get messages with invalid key!");
-  }
-});
-*/
-
-//Probably a very serious security flaw :/
-//Update: Not actually a security flaw! (express handles it)
-//Start :file with ".." does something weird
 
 //Loads static files from the /files/ directory such as images, css, js, etc..
 app.get('/files/:file', function(req, res) {
