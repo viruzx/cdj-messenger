@@ -97,10 +97,10 @@ function login(user, pass, sid, key) {
                 console.log("Login Valid!");
                 validkeys.push(user + "|" + key);
                 console.log("User " + user + " validated with the key " + user + "|" + key);
-                clients.push(sid);
+
                 namelist[user] = res.body.name;
-                io.to(sid).emit("authentication", true);
                 connect(sid, user);
+                io.to(sid).emit("authentication", true);
 
             } else {
                 console.log("User " + user + " failed to authenticate");
@@ -113,24 +113,42 @@ function login(user, pass, sid, key) {
 }
 var connectedClients = [];
 
-function connect(socketid, username) {
-    connectedClients[socketid] = username;
+function countClients(user) {
+    var c = 0;
+    for (var i in connectedClients) {
+        for (var j in connectedClients[i]) {
+            var u = connectedClients[i];
+            if (u == user) {
+                c++;
+            }
+        }
+    }
+    return c;
+}
 
-    clients.forEach(function(element, index, array) {
-        io.to(element).emit("new user", getname(username));
-    });
-    console.log("New user: " + username);
+function connect(socketid, username) {
+    clients.push(socketid);
+    connectedClients[socketid] = username;
+    console.log(countClients(username));
+    if (countClients(username) == 6) {
+        clients.forEach(function(element, index, array) {
+            io.to(element).emit("new user", getname(username));
+        });
+        console.log("New user: " + username);
+    }
 }
 
 function disconnect(socketid) {
     var username = connectedClients[socketid];
-    if (username == undefined){
-      return 0;
+    if (username == undefined) {
+        return 0;
     }
-    clients.forEach(function(element, index, array) {
-        io.to(element).emit("user left", getname(username));
-    });
-    console.log("User left: " + username);
+    if (countClients(username) == 6) {
+        clients.forEach(function(element, index, array) {
+            io.to(element).emit("user left", getname(username));
+        });
+        console.log("User left: " + username);
+    }
     delete connectedClients[socketid];
 }
 
