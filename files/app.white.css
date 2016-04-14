@@ -42,7 +42,7 @@ a.fancybox:hover img {
   background-repeat: no-repeat;
   background-size: 35px 35px;
   background-position: top left;
-  word-wrap: break-word;  
+  word-wrap: break-word;
   overflow: hidden;
 }
 #messages li p {
@@ -204,4 +204,11 @@ a.fancybox:hover img {
 }
 img[src=""] {
   display: none;
+}
+/*tabs style*/
+.tabs li{
+  width: 50%;
+}
+.tabs.inner-tabs li{
+  width: 33.333%;
 }
