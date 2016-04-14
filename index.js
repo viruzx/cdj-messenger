@@ -204,6 +204,7 @@ io.on('connection', function(socket) {
 
     socket.on('image', function(obj) {
         if (checkkey(obj.user, obj.key, socket.id)) {
+            console.log(obj.user, obj.key, socket.id);
             var base64regex = /[A-Za-z0-9+/=]/;
             if (base64regex.test(obj.data)) {
                 delete obj.key;
@@ -222,7 +223,7 @@ io.on('connection', function(socket) {
     });
 
     socket.on('typingMessage', function(obj) {
-        if (checkkey(obj.user, obj.key, socket.id)) {
+        if (checkkey(obj.username, obj.key, socket.id)) {
             delete obj.key;
             obj.name = getname(obj.username);
             if (obj.state) {
