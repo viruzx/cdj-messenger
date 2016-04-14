@@ -2,6 +2,8 @@
 
 CDJ Messenger is an open-source, portable, flexible and *intended to be* a secure messaging platform based on orchestrate.io's database service. Please don't fork this to Github, we don't like github.
 
+>Our development process is now lead by bot development since it is our best way to figure out what is missing in our interface to make everything work smoothly. This means however, that basic UI is pushed back in favor of bot and core development. ~~ viruzx
+
 ##Objectives
 
  - Be a replacement for Facebook Messenger

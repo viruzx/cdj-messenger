@@ -50,14 +50,9 @@ app.get('/', function(req, res) {
     res.sendFile(__dirname + '/client.html');
 });
 
-//Check key (requires username and key)
-function checkkey(user, key) {
-    var check = user + "|" + key;
-    if (key.indexOf("|") > -1 || user.indexOf("|") > -1) {
-        //Key Tampering Detected
-        return false;
-    }
-    return (validkeys.indexOf(check) > -1);
+//Check key (requires username, key and socketid)
+function checkkey(user, key, sid) {
+    return (validkeys[sid] === user + "|" + key);
 }
 
 //Loads static files from the /files/ directory such as images, css, js, etc..
@@ -78,7 +73,7 @@ function login(user, pass, sid, key) {
         .then(function(res) {
             if (res.body.password.hashCode() == pass) {
                 console.log("Login Valid!");
-                validkeys.push(user + "|" + key);
+                validkeys[sid] = (user + "|" + key);
                 console.log("User " + user + " validated with the key " + user + "|" + key);
 
                 namelist[user] = res.body.name;
@@ -127,6 +122,7 @@ function disconnect(socketid) {
         return 0;
     }
     delete connectedClients[socketid];
+    delete validkeys[socketid];
     if (countClients(username) == 0) {
         clients.forEach(function(element, index, array) {
             io.to(element).emit("user left", getname(username));
@@ -144,7 +140,7 @@ io.on('connection', function(socket) {
         disconnect(socket.id);
     });
     socket.on('prevmsg', function(obj) {
-        if (checkkey(obj.user, obj.key)) {
+        if (checkkey(obj.user, obj.key, socket.id)) {
             //Handle limits later on
             db.list('messages', {
                     sort: '@path.reftime:desc',
@@ -164,7 +160,7 @@ io.on('connection', function(socket) {
         return Date.now();
     }
     socket.on('chat message', function(obj) {
-        if (checkkey(obj.user, obj.key)) {
+        if (checkkey(obj.user, obj.key, socket.id)) {
             if (!(obj.msg == "")) {
                 delete obj.key;
                 obj.type = "text";
@@ -207,7 +203,7 @@ io.on('connection', function(socket) {
     }
 
     socket.on('image', function(obj) {
-        if (checkkey(obj.user, obj.key)) {
+        if (checkkey(obj.user, obj.key, socket.id)) {
             var base64regex = /[A-Za-z0-9+/=]/;
             if (base64regex.test(obj.data)) {
                 delete obj.key;
@@ -226,7 +222,7 @@ io.on('connection', function(socket) {
     });
 
     socket.on('typingMessage', function(obj) {
-        if (checkkey(obj.username, obj.key)) {
+        if (checkkey(obj.user, obj.key, socket.id)) {
             delete obj.key;
             obj.name = getname(obj.username);
             if (obj.state) {
@@ -248,7 +244,7 @@ io.on('connection', function(socket) {
 
     //Forum module starts
     socket.on('loadAllThreads', function(obj) {
-        if (checkkey(obj.user, obj.key)) {
+        if (checkkey(obj.user, obj.key, socket.id)) {
             db.search('Threads', "type:thread", {
                     sort: '@path.reftime:desc'
                 })
@@ -262,7 +258,7 @@ io.on('connection', function(socket) {
         }
     });
     socket.on('loadFilterThreads', function(obj) {
-        if (checkkey(obj.user, obj.key)) {
+        if (checkkey(obj.user, obj.key, socket.id)) {
             var searchStr = "type:thread AND cat:" + obj.filter;
             if (obj.filter == "0") {
                 searchStr = "type:thread";
@@ -282,7 +278,7 @@ io.on('connection', function(socket) {
         }
     });
     socket.on('image2url', function(obj) {
-        if (checkkey(obj.user, obj.key)) {
+        if (checkkey(obj.user, obj.key, socket.id)) {
             obj.data = obj.data.replace(/^data:image\/(png|gif|jpeg);base64,/, '');
             imgur.uploadBase64(obj.data)
                 .then(function(json) {
@@ -295,7 +291,7 @@ io.on('connection', function(socket) {
         }
     });
     socket.on('image2url2', function(obj) {
-        if (checkkey(obj.user, obj.key)) {
+        if (checkkey(obj.user, obj.key, socket.id)) {
             obj.data = obj.data.replace(/^data:image\/(png|gif|jpeg);base64,/, '');
             imgur.uploadBase64(obj.data)
                 .then(function(json) {
@@ -308,7 +304,7 @@ io.on('connection', function(socket) {
         }
     });
     socket.on("loadSingleThread", function(obj) {
-        if (checkkey(obj.user, obj.key)) {
+        if (checkkey(obj.user, obj.key, socket.id)) {
             db.search('Threads', obj.id, {
                     sort: '@path.reftime:asc',
                     limit: '100'
@@ -324,7 +320,7 @@ io.on('connection', function(socket) {
     })
 
     socket.on('postReply', function(obj) {
-        if (checkkey(obj.user, obj.key)) {
+        if (checkkey(obj.user, obj.key, socket.id)) {
             if (!(obj.post.image == "" && obj.post.title == "" && obj.post.content == "")) {
                 delete obj.key;
                 obj.post.poster = getname(obj.user);
@@ -346,7 +342,7 @@ io.on('connection', function(socket) {
     });
 
     socket.on('postThread', function(obj) {
-        if (checkkey(obj.user, obj.key)) {
+        if (checkkey(obj.user, obj.key, socket.id)) {
             if (!(obj.post.title == "")) {
                 delete obj.key;
                 obj.post.poster = getname(obj.user);
