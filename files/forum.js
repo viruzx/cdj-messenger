@@ -140,7 +140,7 @@ function doPost() {
     key: uservar.key,
     post: {
       "image": $(".uimgurl").text(),
-      "poster": uservar.usr,
+      "user": uservar.usr,
       "title": $(".postTitle").val(),
       "content": $(".postContent").val(),
       "cat": $(".catforum").val(),
@@ -210,7 +210,7 @@ function doReply() {
     key: uservar.key,
     post: {
       "image": $(".uimgurl2").text(),
-      "poster": uservar.usr,
+      "user": uservar.usr,
       "title": $(".postTitle2").val(),
       "content": $(".postContent2").val(),
       "replyto": $(".openThread").data("id"),
