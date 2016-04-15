@@ -54,7 +54,11 @@ function loadThread(id) {
 function deleteThread(id) {
     var delobj = forumaccess;
     delobj.id = id;
-    socket.emit("delete thread", delobj);
+    var confirmation = confirm("Thread is going to be deleted.");
+    if (confirmation){
+        socket.emit("delete thread", delobj);
+    }
+
 }
 
 function openThread(user, poster, title, image, content, id) {
