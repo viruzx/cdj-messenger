@@ -48,8 +48,19 @@ function loadThread(id){
   $("#open-thread").addClass("selected");
   $(".openThread").data("id", id);
 }
-function openThread(poster, title, image, content, id) {
-  $(".openThread").html('<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + htmlEntities(image) + '"></div> <div class="column small-12 medium-8 end preview-content"> <h2>' + htmlEntities(title) + '</h2> <h4>By: ' + htmlEntities(poster) + '</h4> <p>' + htmlEntities(content) + ' </p> </div> </div><hr>');
+
+function deleteThread(id){
+  var delobj = forumaccess;
+  delobj.id = id;
+  socket.emit("delete thread", delobj);
+}
+
+function openThread(user, poster, title, image, content, id) {
+  var opt;
+  if (user == forumaccess.user){
+    opt = " <a onclick=\"deleteThread('" + id + "')\">[Delete]</a>";
+  }
+  $(".openThread").html('<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + htmlEntities(image) + '"></div> <div class="column small-12 medium-8 end preview-content"> ' + opt + ' <h2>' + htmlEntities(title) + '</h2> <h4>By: ' + htmlEntities(poster) + '</h4> <p>' + htmlEntities(content) + ' </p> </div> </div><hr>');
   $(".preview-image").unbind("click");
   $(".preview-image").click(function() {
     $(this).toggleClass("medium-3");
@@ -61,7 +72,7 @@ function openThread(poster, title, image, content, id) {
     });
 });
 }
-function reply(poster, title, image, content, id) {
+function reply(user, poster, title, image, content, id) {
   $(".openThread").append('<div class="row singleThread"> <div class="column small-12 medium-3 preview-image"><img src="' + htmlEntities(image) + '"></div> <div class="column small-12 medium-8 end preview-content"> <h2>' + htmlEntities(title) + '</h2> <h4>By: ' + htmlEntities(poster) + '</h4> <p>' + htmlEntities(content) + ' </p> </div> </div><hr>');
   $(".preview-image").unbind("click");
   $(".preview-image").click(function() {
@@ -79,12 +90,15 @@ socket.on('open thread', function(data) {
   console.log("Thread Opened", data);
   data.forEach(function(element, index, array){
     if (element.value.type=="thread"){
-      openThread(element.value.poster, element.value.title, element.value.image, element.value.content, element.value.id);
+      openThread(element.value.user, element.value.poster, element.value.title, element.value.image, element.value.content, element.path.key);
     } else {
-      reply(element.value.poster, element.value.title, element.value.image, element.value.content, element.value.id);
+      reply(element.value.user, element.value.poster, element.value.title, element.value.image, element.value.content, element.path.key);
     }
   })
 
+});
+socket.on('thread deleted', function(data) {
+  $("#t10d0c2ff1d02573a, .thread-10d0c2ff1d02573a").html("<h2>Thread Deleted</h3>")
 });
 socket.on('Thread List', function(data) {
   console.log("Got Thread List!", data);

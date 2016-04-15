@@ -306,7 +306,8 @@ io.on('connection', function(socket) {
     });
     socket.on("loadSingleThread", function(obj) {
         if (checkkey(obj.user, obj.key, socket.id)) {
-            db.search('Threads', obj.id, {
+            var searchstr = "key: " + obj.id + " || replyto: " + obj.id;
+            db.search('Threads', searchstr, {
                     sort: '@path.reftime:asc',
                     limit: '100'
                 })
@@ -318,8 +319,24 @@ io.on('connection', function(socket) {
                     console.log(err);
                 });
         }
-    })
+    });
+    socket.on("delete thread", function(obj) {
+        console.log(obj);
+        if (checkkey(obj.user, obj.key, socket.id)) {
+            console.log("Deleting", obj.id);
+            db.remove('Threads', obj.id)
+                .then(function(result) {
+console.log(obj.id, "deleted");
 
+clients.forEach(function(element, index, array) {
+    io.to(element).emit('thread deleted', obj.id);
+});
+                    })
+                .fail(function(err) {
+                    console.log(err);
+                });
+        }
+    })
     socket.on('postReply', function(obj) {
         if (checkkey(obj.user, obj.key, socket.id)) {
             if (!(obj.post.image == "" && obj.post.title == "" && obj.post.content == "")) {
