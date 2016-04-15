@@ -105,12 +105,12 @@ function countClients(user) {
 }
 
 function connect(socketid, username) {
-if (countClients(username) == 0) {
-    clients.forEach(function(element, index, array) {
-        io.to(element).emit("new user", getname(username));
-    });
-    console.log("New user: " + username);
-}
+    if (countClients(username) == 0) {
+        clients.forEach(function(element, index, array) {
+            io.to(element).emit("new user", getname(username));
+        });
+        console.log("New user: " + username);
+    }
     clients.push(socketid);
     connectedClients[socketid] = username;
     console.log(countClients(username));
@@ -323,18 +323,31 @@ io.on('connection', function(socket) {
     socket.on("delete thread", function(obj) {
         console.log(obj);
         if (checkkey(obj.user, obj.key, socket.id)) {
-            console.log("Deleting", obj.id);
-            db.remove('Threads', obj.id)
-                .then(function(result) {
-console.log(obj.id, "deleted");
 
-clients.forEach(function(element, index, array) {
-    io.to(element).emit('thread deleted', obj.id);
-});
-                    })
-                .fail(function(err) {
-                    console.log(err);
-                });
+            db.get('Threads', obj.id)
+                .then(function(res) {
+                    var OP = res.body.user;
+                    var RD = obj.user;
+                    var dp = (OP == RD);
+                    if (dp){
+                        console.log("Deleting", obj.id);
+                        db.remove('Threads', obj.id)
+                            .then(function(result) {
+                                console.log(obj.id, "deleted");
+
+                                clients.forEach(function(element, index, array) {
+                                    io.to(element).emit('thread deleted', obj.id);
+                                });
+                            })
+                            .fail(function(err) {
+                                console.log(err);
+                            });
+                    }
+                }).fail(function(err) {
+
+                })
+
+
         }
     })
     socket.on('postReply', function(obj) {
