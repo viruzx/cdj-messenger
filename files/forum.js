@@ -62,7 +62,7 @@ function deleteThread(id) {
 }
 
 function openThread(user, poster, title, image, content, id) {
-    var opt;
+    var opt = "";
     if (user == forumaccess.user) {
         opt = " <a onclick=\"deleteThread('" + id + "')\">[Delete]</a>";
     }
