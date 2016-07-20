@@ -1,3 +1,8 @@
+#Development Ceased in Favor of Collectivist
+
+Collectivist Project: https://github.com/viruzx/Collectivist
+
+
 #CDJ Messenger
 
 CDJ Messenger is an open-source, portable, flexible and *intended to be* a secure messaging platform based on orchestrate.io's database service. Please don't fork this to Github, ~~we don't like github~~ **project abandonned, I don't care anymore**.
